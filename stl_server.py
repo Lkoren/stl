@@ -3,12 +3,8 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 import os, sys, inspect
-#import ast
-#import glob
-#import json
 import logging
-#import array
-
+import stl
 from tornado.options import define, options
 
 
@@ -22,9 +18,15 @@ from tornado.options import define, options
 define("port", default=8888, help="run on the given port", type=int)
 logging.info("starting torando web server")
 
-class DisplayBaseHandler(tornado.web.RequestHandler):
+class STL_handler(tornado.web.RequestHandler):
 	def get(self):
-		print "hello world"
+		self.render("upload_form.html")
+		print "hello world!"
+	def post(self):
+		f = self.request.files
+		s = stl.Stl()
+		s.load(f)
+
 
 
 
@@ -42,7 +44,7 @@ def main():
 	tornado.options.parse_command_line()
 
 	settings = dict(
-	template_path = os.path.join(os.path.dirname(__file__), "templates"),            
+	template_path = os.path.join(os.path.dirname(__file__), "static"),            
 	debug=True,
 	static_path = os.path.join(os.path.dirname(__file__), "static"),
 	#ui_modules={"Entry": EntryModule},
@@ -51,7 +53,8 @@ def main():
 	#login_url="/auth/login",            
 	)
 	application = tornado.web.Application([
-		(r"/", DisplayBaseHandler),
+		(r"/", STL_handler),
+		(r"/upload", STL_handler)
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        
 	], **settings)
 	http_server = tornado.httpserver.HTTPServer(application)
