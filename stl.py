@@ -1,33 +1,31 @@
 import struct
-
 class Stl:
-	units = ["mm", "cm", "in"]	
-	def load(self, file):
-		print "received file:"
-		self.file = file['file'][0]['body']
-		print self.file	 ## module level var
-		print "Total triangles: "
-		print self.count_triangles(self.file)
-
-		try:
-			while len(self.file) > 0:
-				self.vol += self.read_triangle()
-			print "Ding! Total volume is: "
-			print self.vol
-		except Exception, e:
-			print "Error: "
-			print e
 	def __init__(self):
 		self.normals = []
 		self.points = []
 		self.triangles = []
 		self.bytes = []
 		self.vol = 0
+	def find_volume(self, file, units):
+		print "received file:"
+		self.file = file['file'][0]['body']
+		print self.file	 ## module level var
+		print "Total triangles: "
+		print self.count_triangles(self.file)
+		try:
+			while len(self.file) > 0:
+				self.vol += self.read_triangle()
+			print "Ding! Total volume is: "
+			if units != "mm":
+				vol = cm_to_mm(vol) if units == "cm" else in_to_mm(vol)
+			print self.vol
+			return self.vol
+		except Exception, e:
+			print "Error: "
+			print e
 	def nibble(self, b):
 		out = self.file[:b]
 		self.file = self.file[b:]
-		print "nibbled: "
-		print out
 		return out
 	def count_triangles(self, file):
 		self.nibble(80)
@@ -55,5 +53,8 @@ class Stl:
 		v213 = p2[0]*p1[1]*p3[2]
 		v123 = p1[0]*p2[1]*p3[2]
 		return (1.0/6.0)*(-v321 + v231 + v312 - v132 - v213 + v123)
-
+	def cm_to_mm(vol):
+		return vol/1000
+	def in_to_mm(vol):
+		return vol/16387.064
 

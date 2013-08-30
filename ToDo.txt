@@ -1,0 +1,15 @@
+ToDo: 
+- handle units, 
+- file validation? 
+- admin page with options/prices
+	- generate output based on options/prices
+- STL preview in page
+- Robust error checking: 
+	- set up tests for:
+	- catch if no file uploaded
+	- error message if vol is =< 0
+- handle ascii format
+- drag and drop?
+
+Done!
+- binary files

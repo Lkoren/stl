@@ -25,7 +25,11 @@ class STL_handler(tornado.web.RequestHandler):
 	def post(self):
 		f = self.request.files
 		s = stl.Stl()
-		s.load(f)
+		u = self.get_argument('units')
+		v = s.find_volume(f, u)
+		params= {"file":f, "units": u}
+		self.render("results.html", volume = v, units = u)
+
 
 
 

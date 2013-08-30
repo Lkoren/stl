@@ -17,24 +17,6 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">
-            <div id="file_selector">
-            <label for="file_select"><input id="file_select" name="file" type="file"></label>
-            <input type = "submit" value = "Upload">
-            </div>         
-            <div id="url_selector">
-                Or, enter a file URL:
-                <input type="text" text="">
-            </div>
-            <div id="units">
-                <label>Select file units: </label>
-                <input type="radio" name="units" id="mm" value="mm" checked = "true">
-                <label>mm</label>
-                <input type="radio" name="units" id="cm" value="cm">
-                <label>cm</label>
-                <input type="radio" name="units" id="in" value="in">
-                <label>in</label>
-            </div>
-        </form>         
+        Total volume is {{volume}} {{units}}<sup>3</sup>
     </body>
 </html>
