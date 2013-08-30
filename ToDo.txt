@@ -1,6 +1,7 @@
 ToDo: 
 
-- handle URLs
+- handle URLs: 
+	eg: http://www.thingiverse.com/download:274010
 - admin page with options/prices
 	- generate output based on options/prices
 - STL preview in page

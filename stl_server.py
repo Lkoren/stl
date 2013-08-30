@@ -6,7 +6,7 @@ import os, sys, inspect
 import logging
 import stl
 from tornado.options import define, options
-
+import tornado.httputil
 
 
 # use this if you want to include modules from a subforder
@@ -24,12 +24,19 @@ class STL_handler(tornado.web.RequestHandler):
 		print "hello world!"
 	def post(self):
 		f = self.request.files
+		u = self.get_argument('url')
+
+		print "File and url: "
+		print f
+		print u
+
 		s = stl.Stl()
 		u = self.get_argument('units')
 		params= {"file":f, "units": u}
-		v = s.find_volume(params)
+
+		#v = s.find_volume(params)
 		
-		self.render("results.html", volume = v, units = u)
+		#self.render("results.html", volume = v, units = u)
 
 
 
