@@ -6,9 +6,11 @@ class Stl:
 		self.triangles = []
 		self.bytes = []
 		self.vol = 0
-	def find_volume(self, file, units):
+	def find_volume(self, params):
 		print "received file:"
-		self.file = file['file'][0]['body']
+		#self.file = file['file'][0]['body']
+		self.file = params['file']['file'][0]['body'] #TODO: uuugly -- refactor
+		units = params['units']
 		print self.file	 ## module level var
 		print "Total triangles: "
 		print self.count_triangles(self.file)
@@ -17,12 +19,14 @@ class Stl:
 				self.vol += self.read_triangle()
 			print "Ding! Total volume is: "
 			if units != "mm":
-				vol = cm_to_mm(vol) if units == "cm" else in_to_mm(vol)
-			print self.vol
+				self.vol = ( self.cm_to_mm(self.vol) if (units == "cm") else self.in_to_mm(self.vol) )
+			if self.vol <= 0:
+				raise Exception("There was a file processing error. The volume appears to be less than or equal to zero. Please check that the file is a watertight STL format.")
 			return self.vol
 		except Exception, e:
 			print "Error: "
 			print e
+			return False
 	def nibble(self, b):
 		out = self.file[:b]
 		self.file = self.file[b:]
@@ -53,8 +57,8 @@ class Stl:
 		v213 = p2[0]*p1[1]*p3[2]
 		v123 = p1[0]*p2[1]*p3[2]
 		return (1.0/6.0)*(-v321 + v231 + v312 - v132 - v213 + v123)
-	def cm_to_mm(vol):
+	def cm_to_mm(self, vol):
 		return vol/1000
-	def in_to_mm(vol):
+	def in_to_mm(self, vol):
 		return vol/16387.064
 

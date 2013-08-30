@@ -1,15 +1,25 @@
 ToDo: 
-- handle units, 
-- file validation? 
+
+- handle URLs
 - admin page with options/prices
 	- generate output based on options/prices
 - STL preview in page
 - Robust error checking: 
 	- set up tests for:
 	- catch if no file uploaded
-	- error message if vol is =< 0
+	
 - handle ascii format
 - drag and drop?
+- generate gCode?
+- file validation: 
+	- size
+	- solid? 
+	- small regions?
+	- overhangs?
+	- other issues?
 
 Done!
 - binary files
+- handle units, 
+- error checking:
+	- error message if vol is =< 0	

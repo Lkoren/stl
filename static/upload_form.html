@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>Quote « Draft Print 3D</title>
         <meta name="description" content="STL quote service. Get a quote for your 3d print.">
         <meta name="viewport" content="width=device-width">
@@ -13,22 +13,23 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <!-- <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css"> -->
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <link rel="stylesheet" href="css/main.css"> -->        
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">
-            <div id="file_selector">
-            <label for="file_select"><input id="file_select" name="file" type="file"></label>
-            <input type = "submit" value = "Upload">
-            </div>         
+        <form enctype="multipart/form-data" action="/upload" method="post">            
+            <div id="file_selector">            
+                <input type="radio" name="file_or_url" id="file" value = "file" checked >
+                <label for="file_select"><input id="file_select" name="file" type="file"></label>
+                <input type = "submit" class = "upload_button" value = "upload">
+            </div>                     
             <div id="url_selector">
+                <input type="radio" name="file_or_url" id="url" value = "url" >
                 Or, enter a file URL:
-                <input type="text" text="">
+                <input type="text" class = "url_field" disabled="disabled">                
             </div>
             <div id="units">
                 <label>Select file units: </label>
-                <input type="radio" name="units" id="mm" value="mm" checked = "true">
+                <input type="radio" name="units" id="mm" value="mm" checked>
                 <label>mm</label>
                 <input type="radio" name="units" id="cm" value="cm">
                 <label>cm</label>
@@ -36,5 +37,9 @@
                 <label>in</label>
             </div>
         </form>         
+        <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        
+        <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+        <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src ="/static/js/main.js"></script>
     </body>
 </html>
