@@ -16,10 +16,11 @@
         <link rel="stylesheet" href="css/main.css"> -->        
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">     
+        <form enctype="multipart/form-data" action="/login" method="post">     
             {% raw xsrf_form_html() %}
             <label for="username"><input name="username" type="text" id="username">Admin name</label>
             <p><label for="password"><input name="password" type="text" id="password">password</label></p>
+            <p><input type="submit" value="Login"></p>
             <p>You have been here times.</p>
         </form>         
         <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        

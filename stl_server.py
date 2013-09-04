@@ -2,18 +2,21 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
+import tornado.auth
+import tornado.escape
 import os, sys, inspect
 import logging
 import stl
 from tornado.options import define, options
 import tornado.httputil
-
+#import bcrypt
 
 # use this if you want to include modules from a subforder
 # cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"../DisplayEngine/")))
 # if cmd_subfolder not in sys.path:
 #     sys.path.insert(0, cmd_subfolder)
 
+authorized_users = ['Liav Koren', 'Andre Tiemann']
 
 define("port", default=8888, help="run on the given port", type=int)
 logging.info("starting torando web server")
@@ -39,39 +42,40 @@ class STL_handler(tornado.web.RequestHandler):
 		u = self.get_argument('units')
 		params= {"file": data, "units": u}
 
-		v = s.find_volume(params)
-
-		
+		v = s.find_volume(params)	
 		self.render("results.html", volume = v, units = u)
 
-class Login_handler(tornado.web.RequestHandler):
-	def current_user(self):
-		return self.get_secure_cookie("username")
-	def get(self):
-		self.render('admin_login.html')
-	def post(self):
-		self.set_secure_cookie("username", self.get_argument("username"))
-		self.redirect("/admin")
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        user_json = self.get_secure_cookie("user")
+        return tornado.escape.json_decode(user_json)
 
-class Admin_handler(Login_handler):
-	@tornado.web.authenticated
-	def get(self):
-		#self.render('admin_panel.html', user=self.current_user)
-		self.render('admin_panel.html')
-		"""
-		cookie = self.get_secure_cookie("count")
-		count = int(cookie) + 1 if cookie else 1
-		countString = "1 time" if count == 1 else "%d times" % count
-		#self.set_secure_cookie("count", str(count), httponly=True, secure=True) #secure = True needs an SSL cert 
-		self.set_secure_cookie("count", str(count), httponly=True) 
-		self.render("admin_login.html", count = countString)
-		"""
-class Logout_handler(Login_handler):
-	def get(self):
-		if (self.get_argument("logout", None)):
-			self.clear_cookie("username")
-			self.redirect("/login")
+class AuthHandler(BaseHandler, tornado.auth.GoogleMixin):
+    @tornado.web.asynchronous
+    def get(self):
+        if self.get_argument("openid.mode", None):
+            self.get_authenticated_user(self.async_callback(self._on_auth))
+            return
+        self.authenticate_redirect()
+ 
+    def _on_auth(self, user):
+        if not user:
+            self.send_error(500)
+        print "got user: " + str(user['name'])
+        self.set_secure_cookie("user", tornado.escape.json_encode(user))
+        if user['name'] in authorized_users:
+        	self.redirect("/admin")
+        else:
+        	self.redirect("/")
 
+class Logout_handler(BaseHandler):
+	def get(self):
+		self.clear_cookie("user")
+		self.redirect("/login")
+
+class Admin_handler(BaseHandler):
+	def get(self):
+		self.render("admin.html")
 #dev only:
 #http://stackoverflow.com/questions/12031007/disable-static-file-caching-in-tornado
 
@@ -99,7 +103,7 @@ def main():
 	application = tornado.web.Application([
 		(r"/", STL_handler),
 		(r"/upload", STL_handler),
-		(r"/login", Login_handler),
+		(r"/login", AuthHandler),
 		(r"/admin", Admin_handler),
 		(r"/logout", Logout_handler),
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        

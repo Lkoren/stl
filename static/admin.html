@@ -16,11 +16,17 @@
         <link rel="stylesheet" href="css/main.css"> -->        
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">            
+        <div id="header"><a href="./logout">Logout</a></div>
+        <form enctype="application/x-www-form-urlencoded:" action="/admin" method="post">                
+            <div id="content">
+                <h1>Admin interface</h1>
+                <label for="enum_printers">Number of printers<input name="enum_printers" type="text"></label>
+            </div>
+            
         </form>         
         <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        
         <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
         <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src ="/static/js/admin.js"></script>
     </body>
-</html>`
+</html>
