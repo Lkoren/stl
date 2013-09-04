@@ -8,9 +8,9 @@ $(document).ready(function() {
 		if (file_or_url === "file") {
 			$(".url_field").prop('disabled', true)
 			$("#file_select").prop('disabled', false)
-		} else {
+		} else {		
 			$(".url_field").prop('disabled', false)
-			$("#file_select").prop('disabled', true)
+			$("#file_select").prop('disabled', true)		
 		}
 	})
 })

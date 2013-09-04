@@ -1,4 +1,6 @@
 import struct
+import logging
+
 class Stl:
 	def __init__(self):
 		self.normals = []
@@ -30,17 +32,23 @@ class Stl:
 	def nibble(self, b):
 		out = self.file[:b]
 		self.file = self.file[b:]
+		print "nibbled: " + out
 		return out
 	def count_triangles(self, file):
 		self.nibble(80)
 		return struct.unpack("@i", self.nibble(4))[0]
 	def read_triangle(self):
 		u = struct.unpack
-		n = u("<3f", self.nibble(12))
-		p1 = u("<3f", self.nibble(12))
-		p2 = u("<3f", self.nibble(12))
-		p3 = u("<3f", self.nibble(12))
-		b = u("<h", self.nibble(2))
+		try: 
+			n = u("<3f", self.nibble(12))
+			p1 = u("<3f", self.nibble(12))
+			p2 = u("<3f", self.nibble(12))
+			p3 = u("<3f", self.nibble(12))
+			b = u("<h", self.nibble(2))
+			print "n: " + str(n)
+		except SyntaxError:
+			print "syntax error in data."
+			logging.warning("Syntax error in file." + self.file)
 		l = len(self.points)
 		self.normals.append(n)	
 		self.points.append(p1)
@@ -60,5 +68,7 @@ class Stl:
 	def cm_to_mm(self, vol):
 		return vol/1000
 	def in_to_mm(self, vol):
+		boo
 		return vol/16387.064
+
 
