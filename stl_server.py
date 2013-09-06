@@ -74,8 +74,12 @@ class Logout_handler(BaseHandler):
 		self.redirect("/login")
 
 class Admin_handler(BaseHandler):
+	@tornado.web.authenticated
 	def get(self):
 		self.render("admin.html")
+	def post(self):
+		print self.request
+
 #dev only:
 #http://stackoverflow.com/questions/12031007/disable-static-file-caching-in-tornado
 

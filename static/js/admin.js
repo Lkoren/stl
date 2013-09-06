@@ -1,6 +1,20 @@
 
 var prev_printers = get_num("#enum_printers")
 var printer_data = {"p": []}
+
+////Define the printers available: eg, Makerbot1, Makerbot2, Form1, Zcorpt
+function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
+    var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
+    $("#printers").find("ol").append(str)
+    str = "#p" + id + "_options"
+    var options = $(str)
+}
+function remove_name_field() {        
+    if (get_list_size("#printers") > 1) {
+        $("#printers").find("li:last").remove()
+    }
+}
+////User interaction with the Printer Options area, eg, defining services offered by Makerbot1: low, med, hi quality @ x,y,z price.
 function disable_define_buttons() {
    $(".define_options").each(function() { $(this).attr("disabled", true)}) 
    $("#printers input[type='text'").each(function() { $(this).attr("disabled", true)}) 
@@ -33,13 +47,17 @@ var add_printer_option = function(id)  { //ToDo: refactor. Remove code that adds
         $("#cache_settings_button").attr("value", 'Submit options for ' + name)
     }
 }
-
 function remove_printer_option() {
     if (get_list_size("#printer_options") > 1) {
         $("#printer_options").find("li:last").remove()
     }
 }
-function cache_printer_options(){
+function clear_printer_options(){ //user hits 'submit options', the fields need to go away
+    $(".printer_name").remove()
+    $("#printer_options li").remove()
+    enable_define_buttons()    
+}
+function cache_printer_options(){ 
     var name = $(".printer_name").text().split(":")[1].trim()
     var p ={}
     p[name] = []
@@ -53,22 +71,7 @@ function cache_printer_options(){
     console.log(printer_data)
     clear_printer_options()
 }
-function clear_printer_options(){
-    $(".printer_name").remove()
-    $("#printer_options li").remove()
-    enable_define_buttons()    
-}
-function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
-    var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
-    $("#printers").find("ol").append(str)
-    str = "#p" + id + "_options"
-    var options = $(str)
-}
-function remove_name_field() {        
-    if (get_list_size("#printers") > 1) {
-        $("#printers").find("li:last").remove()
-    }
-}
+////Utility functions
 function update_form() {
     var printers = $("#enum_printers").val()        
     if (printers != get_list_size("#printers")) {    
@@ -76,20 +79,21 @@ function update_form() {
     }
     prev_printers = printers        
 }
-
-$("#enum_printers").bind("mouseup keyup change", update_form)
-
 function get_num(id){
     return $(id).val()
 }
 function get_list_size(id) {
     return $(id).find("li").size()
 }
-
+function submit(){
+    
+}
+////
+$("#enum_printers").bind("mouseup keyup change", update_form)
 update_form()
 
 
-
+////
 /*
 datastruct:
 printers = {
