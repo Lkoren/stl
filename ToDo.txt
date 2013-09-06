@@ -9,6 +9,8 @@ ToDo:
 	    - For all cookies set the HTTPOnly and Secure flag
     	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS
     	- Don't trust any user data (input, headers, cookies etc). Make sure to validate it before using it 
+    -add escaping and validation for all form fields.
+    
 - STL preview in page
 - Robust error checking: 
 	- set up tests for:

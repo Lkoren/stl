@@ -8,32 +8,52 @@
 
 var prev_printers = get_num("#enum_printers")
 
-function toggle_define_buttons() { //buttons which open the Define Printer Options section
-    $(".define_options").each(function() { $(this).toggleDisabled()})
+function disable_define_buttons() {
+   $(".define_options").each(function() { $(this).attr("disabled", true)}) 
+}
+function enable_define_buttons() {
+    $(".define_options").each(function() { $(this).attr("disabled", false)})    
 }
 
-var define_printer_option = function(id)  {
+var add_printer_option = function(id)  {
+    if (id) {        
+        var n = "#printer_" + id  
+        var name = $(n).val()                
+        //$("#printer_options").prepend("<div class='printer_name' id='"+name+"'>Options for: " + name + "</div>")
+        //$("#printer_options").prepend("<div class='printer_name' id='"+name+"'>")
+        $("#printer_options").prepend("<div class='printer_name'>")
+        $(".printer_name").text("Options for: " + name)
+
+    }
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
-    toggle_define_buttons()
+    disable_define_buttons()
     var target = $("#printer_options").find("ul")       
     var insert_string = "<li><label>Service name: <input type='text' id='option_"+id+"_name'></label> \
-    <input type='number' id='option_"+id+"_cost' min='0.0' step='0.01'><label>Cost</label> \
-    <input type='button' value='+' onclick='define_printer_option()'><input type='button' value='-' onclick='remove_option()'> </li>"
+    <input type='number' id='option_"+id+"_cost' value='0.00'min='0.0' step='0.01'><label>Cost per CC</label>"
+    if (get_list_size("#printer_options") < 1) {
+        insert_string += "<input type='button' value='+' onclick='add_printer_option()'>\
+        <input type='button' value='-' onclick='remove_printer_option()'> <input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"
+    }    
     target.append(insert_string)    
+    $("#cache_settings_button").attr("value", 'Submit options for ' + name)
 }
 
-function add_option() {
-    
+function remove_printer_option() {
+    if (get_list_size("#printer_options") > 1) {
+        $("#printer_options").find("li:last").remove()
+    }
+}
+function cache_printer_options(){
+    $(".printer_name").remove()
+    $("#printer_options li").remove()
+    enable_define_buttons()
+    console.log("cache stub")
 }
 
 
-
-function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..
-    //var str = "<li><input type='text' id='printer_" + id + "'><input type='number' value = '1' min = '1' id='p" + id + "_options' ><label>No. of options"     
-    //var str = "<li><input type='text' id='printer_"+id+"'><input onClick='add_printer_option("+id+");' type='button' value='+'></input><input onClick='remove_printer_option("+id+")' type='button' value='-'></input>"
-    var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='define_printer_option("+id+")' type='button' value='Define options'>"
+function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
+    var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
     $("#printers").find("ol").append(str)
-    //$("#printer_" + id).bind("change", create_printer_options)
     str = "#p" + id + "_options"
     var options = $(str)
     options.bind("change", update_printer_options_list)
