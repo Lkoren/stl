@@ -5,10 +5,12 @@ import tornado.web
 import tornado.auth
 import tornado.escape
 import os, sys, inspect
+import urllib
 import logging
 import stl
 from tornado.options import define, options
 import tornado.httputil
+import ast
 #import bcrypt
 
 # use this if you want to include modules from a subforder
@@ -43,7 +45,7 @@ class STL_handler(tornado.web.RequestHandler):
 		params= {"file": data, "units": u}
 
 		v = s.find_volume(params)	
-		self.render("results.html", volume = v, units = u)
+		self.render("results.html", volume = v, units = u, printer_list={"makerbot":[{"med": 20.1}, {"foo": "74"}] })
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -79,7 +81,26 @@ class Admin_handler(BaseHandler):
 		self.render("admin.html")
 	def post(self):
 		print "##################"
-		print self.get_argument('data')
+		data = ast.literal_eval(self.get_argument('data'))
+		print type(data)
+		print (data["p"])
+		params = {"volume": "10", "units": "mm", "printer_list": data["p"]}
+		url = "/results.html?" + urllib.urlencode(params)
+		self.redirect(url)
+		#self.render("results.html", volume = "10", units = "mm", printer_list = data["p"])
+		#self.write("thanks!")
+class Results_handler(tornado.web.RequestHandler):
+	def get(self, params):		
+		self.render("results.html", volume = params.volume, units = params.units, printer_list = params.printer_list)
+
+"""
+datastruct:
+printers = {
+    "printers": [ {"makerbot": [{"draft quality": 2.00}, {"medium quality": 4.00}, {"high quality": 6.00}]},
+      {"form1": [{"draft quality": 5.00}, {"high quality": "10.00"}]}
+    ]
+} 
+"""
 
 #dev only:
 #http://stackoverflow.com/questions/12031007/disable-static-file-caching-in-tornado
@@ -111,6 +132,7 @@ def main():
 		(r"/login", AuthHandler),
 		(r"/admin", Admin_handler),
 		(r"/logout", Logout_handler),
+		(r"/results", Results_handler),
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        
 	], **settings)
 	http_server = tornado.httpserver.HTTPServer(application)

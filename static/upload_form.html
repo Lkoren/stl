@@ -16,7 +16,8 @@
         <link rel="stylesheet" href="css/main.css"> -->        
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">            
+        <form enctype="multipart/form-data" action="/upload" method="post">   
+            {% raw xsrf_form_html() %}         
             <div id="file_selector">            
                 <input type="radio" name="file_or_url" id="file" value = "file" checked >
                 <label for="file_select"><input id="file_select" name="file" type="file"></label>

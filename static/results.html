@@ -22,5 +22,10 @@
         {% else %}
             There was an error processing your file. Please check that it is a valid, water-tight STL file. 
         {% end %}
+        <ul>
+            {% for printer in printer_list %}
+                <li>{{printer_list[printer] }}</li>
+            {% end %}
+        </ul>
     </body>
 </html>

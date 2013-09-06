@@ -68,10 +68,14 @@ function cache_printer_options(){
         p[name].push(o)
     })
     printer_data.p.push(p)
-    console.log(printer_data)
+    console.log(printer_data)    
     clear_printer_options()
 }
 ////Utility functions
+function process_form() {
+    submit_json("/admin", printer_data, function(){alert("wee!")})
+
+}
 function update_form() {
     var printers = $("#enum_printers").val()        
     if (printers != get_list_size("#printers")) {    
@@ -85,35 +89,23 @@ function get_num(id){ //ToDo: only called once, remove.
 function get_list_size(id) {
     return $(id).find("li").size()
 }
-function submit_json(url, data, callback){
-    data.xsrf = get_cookie("_xsrf")
-    console.log(jQuery.param(data))
-    /*
+function submit_json(url, d, callback){
+    var data = {}
+    data.data = JSON.stringify(d)
+    data._xsrf = getCookie("_xsrf")
+    console.log(data)
     $.ajax({
         type: "POST",
         url: url,
-        data: jQuery.param(data),
+        data: data,
         dataType: "json",
         success: callback
 
-    })*/
+    })
 }
 function getCookie(name) {
     var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return c ? c[1] : undefined;
-}
-jQuery.postJSON = function(url, d, callback) {
-    var data = {}
-    data.data = d
-    data._xsrf = getCookie("_xsrf")
-    console.log("hi: ", data)
-    jQuery.ajax({
-        url: url,
-        data: jQuery.param(data),
-        dataType: "json",
-        type: "POST",
-        success: callback
-    });
 }
 ////
 $("#enum_printers").bind("mouseup keyup change", update_form)
