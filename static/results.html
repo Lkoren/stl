@@ -22,10 +22,23 @@
         {% else %}
             There was an error processing your file. Please check that it is a valid, water-tight STL file. 
         {% end %}
+            The cost on various printers would be:
         <ul>
-            {% for printer in printer_list %}
-                <li>{{printer_list[printer] }}</li>
-            {% end %}
+            {%for printer in printer_list%}
+                <p>{{printer.keys()[0]}}</p>
+                <ul>
+                    {% for options in printer.values() %}
+                        {% for option in options %}
+                            <li> {{option.keys()[0]}} : {{currency(volume * float(option.values()[0]))}} </li>  
+                        {%end%}
+                    {%end%}
+                </ul>
+            {%end%}
         </ul>
+        <p>Prices are an estimate only and may vary slightly. This is because this web service use a slightly different algorithm to calculate total volume.</p>
+
+        <div class="small">
+            <p>STL estimation service by Liav Koren.</p>
+        </div>
     </body>
 </html>

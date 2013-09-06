@@ -73,7 +73,7 @@ function cache_printer_options(){
 }
 ////Utility functions
 function process_form() {
-    submit_json("/admin", printer_data, function(){alert("wee!")})
+    submit_json("/admin", printer_data, function(msg){alert(msg["result"])})
 
 }
 function update_form() {

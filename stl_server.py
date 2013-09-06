@@ -11,6 +11,8 @@ import stl
 from tornado.options import define, options
 import tornado.httputil
 import ast
+import ui_methods
+import json
 #import bcrypt
 
 # use this if you want to include modules from a subforder
@@ -45,7 +47,18 @@ class STL_handler(tornado.web.RequestHandler):
 		params= {"file": data, "units": u}
 
 		v = s.find_volume(params)	
-		self.render("results.html", volume = v, units = u, printer_list={"makerbot":[{"med": 20.1}, {"foo": "74"}] })
+		printers = self.get_printer_list()
+		#self.render("results.html", volume = v, units = u, printer_list={"makerbot":[{"med": 20.1}, {"foo": 74}] })
+		self.render("results.html", volume = v, units = u, printer_list=printers)
+	def get_printer_list(self):
+		try:
+			with open("./admin/printer_options.ast", "r") as f:
+				f.seek(0)
+				data = ast.literal_eval(f.read())
+				f.close()
+				return data
+		except:
+			logging.warning("Filed to open printer options file.")
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -82,17 +95,24 @@ class Admin_handler(BaseHandler):
 	def post(self):
 		print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
-		print type(data)
-		print (data["p"])
-		params = {"volume": "10", "units": "mm", "printer_list": data["p"]}
-		url = "/results.html?" + urllib.urlencode(params)
-		self.redirect(url)
+		#data = tornado.escape.json_decode(self.get_argument('data'))
+		print type(data['p'])
+		self.save_settings(data["p"])
 		#self.render("results.html", volume = "10", units = "mm", printer_list = data["p"])
 		#self.write("thanks!")
-class Results_handler(tornado.web.RequestHandler):
-	def get(self, params):		
-		self.render("results.html", volume = params.volume, units = params.units, printer_list = params.printer_list)
-
+	def save_settings(self, data):
+		print(data)
+		#try:
+		with open("./admin/printer_options.ast", "w") as f:
+			f.seek(0)
+			f.write(str(data))
+			f.close()
+			self.write(json.dumps({"result": "Settings file saved."}))
+		"""
+		except:
+			logging.warning("Error saving settings file.")
+			self.write(json.dumps({"result": "Failed to save settings file. Sorry. Check file permissions."}))
+		"""
 """
 datastruct:
 printers = {
@@ -120,7 +140,8 @@ def main():
 	static_path = os.path.join(os.path.dirname(__file__), "static"),
 	cookie_secret = "/gDj/FGERTSG1Nd0QYBEZO5lwJL6rE3Brtw1G1TzFYE=",
 	xsrf_cookies = True,
-	login_url = "/login"
+	login_url = "/login",
+	ui_methods=ui_methods,
 	#ui_modules={"Entry": EntryModule},
 	#xsrf_cookies=True,
 	#cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
@@ -132,7 +153,6 @@ def main():
 		(r"/login", AuthHandler),
 		(r"/admin", Admin_handler),
 		(r"/logout", Logout_handler),
-		(r"/results", Results_handler),
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        
 	], **settings)
 	http_server = tornado.httpserver.HTTPServer(application)
