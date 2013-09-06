@@ -78,7 +78,8 @@ class Admin_handler(BaseHandler):
 	def get(self):
 		self.render("admin.html")
 	def post(self):
-		print self.request
+		print "##################"
+		print self.get_argument('data')
 
 #dev only:
 #http://stackoverflow.com/questions/12031007/disable-static-file-caching-in-tornado

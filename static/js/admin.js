@@ -79,14 +79,41 @@ function update_form() {
     }
     prev_printers = printers        
 }
-function get_num(id){
+function get_num(id){ //ToDo: only called once, remove.
     return $(id).val()
 }
 function get_list_size(id) {
     return $(id).find("li").size()
 }
-function submit(){
-    
+function submit_json(url, data, callback){
+    data.xsrf = get_cookie("_xsrf")
+    console.log(jQuery.param(data))
+    /*
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: jQuery.param(data),
+        dataType: "json",
+        success: callback
+
+    })*/
+}
+function getCookie(name) {
+    var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return c ? c[1] : undefined;
+}
+jQuery.postJSON = function(url, d, callback) {
+    var data = {}
+    data.data = d
+    data._xsrf = getCookie("_xsrf")
+    console.log("hi: ", data)
+    jQuery.ajax({
+        url: url,
+        data: jQuery.param(data),
+        dataType: "json",
+        type: "POST",
+        success: callback
+    });
 }
 ////
 $("#enum_printers").bind("mouseup keyup change", update_form)
