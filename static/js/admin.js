@@ -1,29 +1,23 @@
-(function($) { //http://stackoverflow.com/questions/4702000/toggle-input-disabled-attribute-using-jquery
-    $.fn.toggleDisabled = function(){
-        return this.each(function(){
-            this.disabled = !this.disabled;
-        });
-    };
-})(jQuery);
 
 var prev_printers = get_num("#enum_printers")
-
+var printer_data = {"p": []}
 function disable_define_buttons() {
    $(".define_options").each(function() { $(this).attr("disabled", true)}) 
+   $("#printers input[type='text'").each(function() { $(this).attr("disabled", true)}) 
+   $("#enum_printers").attr("disabled", true)
+
 }
 function enable_define_buttons() {
     $(".define_options").each(function() { $(this).attr("disabled", false)})    
+    $("#printers input[type='text'").each(function() { $(this).attr("disabled", false)})    
+    $("#enum_printers").attr("disabled", false)
 }
-
-var add_printer_option = function(id)  {
+var add_printer_option = function(id)  { //ToDo: refactor. Remove code that adds custom ids to text/num input elements?
     if (id) {        
         var n = "#printer_" + id  
         var name = $(n).val()                
-        //$("#printer_options").prepend("<div class='printer_name' id='"+name+"'>Options for: " + name + "</div>")
-        //$("#printer_options").prepend("<div class='printer_name' id='"+name+"'>")
         $("#printer_options").prepend("<div class='printer_name'>")
         $(".printer_name").text("Options for: " + name)
-
     }
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
     disable_define_buttons()
@@ -35,7 +29,9 @@ var add_printer_option = function(id)  {
         <input type='button' value='-' onclick='remove_printer_option()'> <input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"
     }    
     target.append(insert_string)    
-    $("#cache_settings_button").attr("value", 'Submit options for ' + name)
+    if (get_list_size("#printer_options") === 1) {
+        $("#cache_settings_button").attr("value", 'Submit options for ' + name)
+    }
 }
 
 function remove_printer_option() {
@@ -44,50 +40,41 @@ function remove_printer_option() {
     }
 }
 function cache_printer_options(){
+    var name = $(".printer_name").text().split(":")[1].trim()
+    var p ={}
+    p[name] = []
+    $("#printer_options li").each(function(){
+        var o = {}
+        var service_name = $(this).find("input[type='text']").val()
+        o[service_name] = $(this).find("input[type='number']").val()
+        p[name].push(o)
+    })
+    printer_data.p.push(p)
+    console.log(printer_data)
+    clear_printer_options()
+}
+function clear_printer_options(){
     $(".printer_name").remove()
     $("#printer_options li").remove()
-    enable_define_buttons()
-    console.log("cache stub")
+    enable_define_buttons()    
 }
-
-
 function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
     var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
     $("#printers").find("ol").append(str)
     str = "#p" + id + "_options"
     var options = $(str)
-    options.bind("change", update_printer_options_list)
 }
-
 function remove_name_field() {        
     if (get_list_size("#printers") > 1) {
         $("#printers").find("li:last").remove()
     }
 }
-
 function update_form() {
     var printers = $("#enum_printers").val()        
     if (printers != get_list_size("#printers")) {    
         printers > $("#printers").find("li").size() ? make_name_field(printers) : remove_name_field()
     }
     prev_printers = printers        
-}
-/*
-function create_printer_options() {
-    console.log("printer options")
-}*/
-
-function update_printer_options_list(){
-    console.log("hi!")
-
-    var target = $("#printer_options").find("ul")       
-    /*
-    for (var i = 0; i < get_num(o); i++) {
-        var insert_string = "<li><label>Service name: <input type='text' id='option_"+i+"_name'></label><input type='number' id='option_"+i+"_cost'><label>Cost</label></li>"
-        target.append(insert_string)
-    }
-    */
-    //get_list_size()
 }
 
 $("#enum_printers").bind("mouseup keyup change", update_form)
@@ -103,3 +90,11 @@ update_form()
 
 
 
+/*
+datastruct:
+printers = {
+    "printers": [ {"makerbot": [{"draft quality": 2.00}, {"medium quality": 4.00}, {"high quality": 6.00}]},
+      {"form1": [{"draft quality": 5.00}, {"high quality": "10.00"}]}
+    ]
+} 
+*/
