@@ -88,10 +88,11 @@ class Logout_handler(BaseHandler):
 		self.clear_cookie("user")
 		self.redirect("/login")
 
-class Admin_handler(BaseHandler):
+class Admin_handler(BaseHandler, STL_handler):
 	@tornado.web.authenticated
 	def get(self):
-		self.render("admin.html")
+		data = self.get_printer_list()
+		self.render("admin.html", printer_list = data)
 	def post(self):
 		print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
