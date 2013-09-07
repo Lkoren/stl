@@ -1,19 +1,21 @@
 ToDo: 
+
+1_in cube, uploaded with in units, gets zero vol.
+
 - sanitize input!
-	- check that binary files are only float/ints
+	- Confirm that everything relevant is properly escaped/encoded. 
 		* using struct.unpack translates everything to floats, sufficient for scrubbing? 
 	- check structure of ascii files. 
-- admin page with options/prices
-	- generate output based on options/prices
-	- SSL cert for localhost/deployment
-	    - For all cookies set the HTTPOnly and Secure flag
-    	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS
-    	- Don't trust any user data (input, headers, cookies etc). Make sure to validate it before using it 
-    -add escaping and validation for all form fields.
-    
+	- strings in the number field crash the server. 
+- need a way to do GET on the current printer_options file.
+
+- SSL cert for localhost/deployment
+    - For all cookies set the HTTPOnly and Secure flag
+	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS
+	- Don't trust any user data (input, headers, cookies etc). Make sure to validate it before using it 
+       
 - STL preview in page
-- Robust error checking: 
-	- set up tests for:
+- Form validation:
 	- catch if no file uploaded
 - handle URLs: 
 	eg: http://www.thingiverse.com/download:274010
@@ -27,8 +29,16 @@ ToDo:
 	- overhangs?
 	- other issues?
 - generate gCode?
+
 Done!
+- sanitize input!
+	- check that binary files are only float/ints.
+		-relevant code is HTML escaped. 
+
 - binary files
 - handle units, 
 - error checking:
 	- error message if vol is =< 0	
+- admin page with options/prices
+	- generate output based on options/prices	
+-add escaping and validation for all form fields..

@@ -19,7 +19,7 @@ class Stl:
 		try:
 			while len(self.file) > 0:
 				self.vol += self.read_triangle()
-			print "Ding! Total volume is: "
+			print "Ding! Total volume is: "+ str(self.vol)
 			if units != "mm":
 				self.vol = ( self.cm_to_mm(self.vol) if (units == "cm") else self.in_to_mm(self.vol) )
 			if self.vol <= 0:
@@ -68,7 +68,6 @@ class Stl:
 	def cm_to_mm(self, vol):
 		return vol/1000
 	def in_to_mm(self, vol):
-		boo
 		return vol/16387.064
 
 
