@@ -1,29 +1,24 @@
 ToDo: 
-
-1_in cube, uploaded with in units, gets zero vol.
-
-- sanitize input!
-	- Confirm that everything relevant is properly escaped/encoded. 
+- Audit/confirm that everything relevant is properly escaped/encoded. 
 		* using struct.unpack translates everything to floats, sufficient for scrubbing? 
 	- check structure of ascii files. 
+- Form validation:
 	- strings in the number field crash the server. 
-- need a way to do GET on the current printer_options file.
+	- catch if no file uploaded
+- some basic CSS.
 
 - SSL cert for localhost/deployment
     - For all cookies set the HTTPOnly and Secure flag
-	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS
-	- Don't trust any user data (input, headers, cookies etc). Make sure to validate it before using it 
-       
+	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS	      
 - STL preview in page
-- Form validation:
-	- catch if no file uploaded
+
+Extra: 
 - handle URLs: 
 	eg: http://www.thingiverse.com/download:274010
 		- May need to write logic to parse file objects, no because there appears to be no guarantee that I can gulp the entire file over the network. 
 - handle ascii format
 - drag and drop?
-- file validation: 
-	- size
+- file validation?: 
 	- solid? 
 	- small regions?
 	- overhangs?
@@ -42,3 +37,5 @@ Done!
 - admin page with options/prices
 	- generate output based on options/prices	
 -add escaping and validation for all form fields..
+-1_in cube, uploaded with in units, gets zero vol.
+- need a way to do GET on the current printer_options file.
