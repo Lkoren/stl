@@ -33,7 +33,17 @@
             </div>  
             <input type="button" onclick = 'process_form()' value="Submit">
         </form>       
-        {{printer_list}}  
+        <h2>Current Printers and options:</h2>
+        {%for printer in printer_list%}       
+        <p>{{printer.keys()[0]}}</p>
+        <ul>
+            {% for options in printer.values() %}
+                {% for option in options %}
+                    <li> {{option.keys()[0]}} : {{float(option.values()[0])}} </li>  
+                {%end%}
+            {%end%}
+        </ul>
+        {%end%}
         <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        
         <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
         <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
