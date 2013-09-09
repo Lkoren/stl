@@ -62,8 +62,20 @@ class STL_handler(tornado.web.RequestHandler):
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
-        user_json = self.get_secure_cookie("user")
-        return tornado.escape.json_decode(user_json)
+    	try:
+	        user_json = json.loads(self.get_secure_cookie("user"))
+	        print "#######################################"              
+	        print "name: "
+	        print user_json["name"]
+	        print "Authorized? "
+	        print user_json["name"] in authorized_users
+	        print "#######################################"
+	        if user_json["name"] in authorized_users:
+	        	print "Authorized!"
+	        	return user_json["name"]
+    	except:
+        	self.redirect("/")
+        	return None
 
 class AuthHandler(BaseHandler, tornado.auth.GoogleMixin):
     @tornado.web.asynchronous
@@ -86,7 +98,7 @@ class AuthHandler(BaseHandler, tornado.auth.GoogleMixin):
 class Logout_handler(BaseHandler):
 	def get(self):
 		self.clear_cookie("user")
-		self.redirect("/login")
+		self.redirect("/")
 
 class Admin_handler(BaseHandler, STL_handler):
 	@tornado.web.authenticated
@@ -94,10 +106,10 @@ class Admin_handler(BaseHandler, STL_handler):
 		data = self.get_printer_list()
 		self.render("admin.html", printer_list = data)
 	def post(self):
-		print "##################"
+		#print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
 		#data = tornado.escape.json_decode(self.get_argument('data'))
-		print type(data['p'])
+		#print type(data['p'])
 		self.save_settings(data["p"])
 		#self.render("results.html", volume = "10", units = "mm", printer_list = data["p"])
 		#self.write("thanks!")

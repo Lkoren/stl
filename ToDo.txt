@@ -7,6 +7,7 @@ ToDo:
 	- catch if no file uploaded
 - some basic CSS.
 
+
 - SSL cert for localhost/deployment
     - For all cookies set the HTTPOnly and Secure flag
 	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS	      
@@ -39,3 +40,5 @@ Done!
 -add escaping and validation for all form fields..
 -1_in cube, uploaded with in units, gets zero vol.
 - need a way to do GET on the current printer_options file.
+- If not logged in to goog, admin login page fails. 
+	- user validation/authentication fixed.
