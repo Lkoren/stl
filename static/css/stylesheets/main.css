@@ -1,0 +1,8 @@
+/* line 2, ../sass/main.scss */
+input:invalid {
+  border: 1px solid red;
+}
+/* line 5, ../sass/main.scss */
+input:valid {
+  border: 1px solid green;
+}

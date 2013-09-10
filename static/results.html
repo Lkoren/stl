@@ -29,7 +29,11 @@
                 <ul>
                     {% for options in printer.values() %}
                         {% for option in options %}
+                            {% try %}
                             <li> {{option.keys()[0]}} : {{currency(volume * float(option.values()[0]))}} </li>  
+                            {% except %}
+                                <p>Oops. Something seems to be wrong. Try again later.</p>
+                            {%end%}    
                         {%end%}
                     {%end%}
                 </ul>

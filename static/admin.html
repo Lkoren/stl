@@ -14,6 +14,7 @@
 
         <!-- <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css"> -->        
+        <link rel="stylesheet" href="static/css/stylesheets/main.css">
     </head>
     <body>
         <div id="header"><a href="./logout">Logout</a></div>
@@ -21,7 +22,7 @@
             {% raw xsrf_form_html() %}         
             <div id="content">
                 <h1>Admin interface</h1>
-                <label for="enum_printers">Number of printers<input id = "enum_printers" name="enum_printers" type="number" value="1" min = "1"></label>
+                <label for="enum_printers">Number of printers<input id = "enum_printers" name="enum_printers" pattern="\d+" type="number" value="1" min = "1"></label>
                 <div id="printers">
                     
                     <ol></ol>
@@ -39,7 +40,11 @@
         <ul>
             {% for options in printer.values() %}
                 {% for option in options %}
-                    <li> {{option.keys()[0]}} : {{float(option.values()[0])}} </li>  
+                    {% try %}
+                        <li> {{option.keys()[0]}} : {{float(option.values()[0])}} </li>  
+                    {% except%}
+                        <p>Error rendering data. Did you make a mistake entering the price?</p>
+                    {%end%}        
                 {%end%}
             {%end%}
         </ul>

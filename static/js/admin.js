@@ -4,7 +4,7 @@ var printer_data = {"p": []}
 
 ////Define the printers available: eg, Makerbot1, Makerbot2, Form1, Zcorpt
 function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
-    var str = "<li><input type='text' id='printer_"+id+"'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
+    var str = "<li><input type='text' id='printer_"+id+"' maxlength='80'><input class='define_options' onclick='add_printer_option("+id+")' type='button' value='Define options'>"
     $("#printers").find("ol").append(str)
     str = "#p" + id + "_options"
     var options = $(str)
@@ -36,8 +36,8 @@ var add_printer_option = function(id)  { //ToDo: refactor. Remove code that adds
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
     disable_define_buttons()
     var target = $("#printer_options").find("ul")       
-    var insert_string = "<li><label>Service name: <input type='text' id='option_"+id+"_name'></label> \
-    <input type='number' id='option_"+id+"_cost' value='0.00'min='0.0' step='0.01'><label>Cost per CC</label>"
+    var insert_string = "<li><label>Service name: <input type='text' id='option_"+id+"_name' required></label> \
+    <input type='number' id='option_"+id+"_cost' pattern='[0-9]+\.[0-9]+' value='0.00'min='0.0' step='0.01'><label>Cost per CC</label>"
     if (get_list_size("#printer_options") < 1) {
         insert_string += "<input type='button' value='+' onclick='add_printer_option()'>\
         <input type='button' value='-' onclick='remove_printer_option()'> <input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"

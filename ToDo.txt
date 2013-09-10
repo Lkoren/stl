@@ -25,7 +25,7 @@ Extra:
 	- overhangs?
 	- other issues?
 - generate gCode?
-
+- admin favicon
 Done!
 - sanitize input!
 	- check that binary files are only float/ints.

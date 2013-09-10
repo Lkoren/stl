@@ -105,6 +105,7 @@ class Admin_handler(BaseHandler, STL_handler):
 	def get(self):
 		data = self.get_printer_list()
 		self.render("admin.html", printer_list = data)
+		self.write(data)
 	def post(self):
 		#print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
