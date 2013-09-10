@@ -22,14 +22,21 @@
             {% raw xsrf_form_html() %}         
             <div id="content">
                 <h1>Admin interface</h1>
-                <label for="enum_printers">Number of printers<input id = "enum_printers" name="enum_printers" pattern="\d+" type="number" value="1" min = "1"></label>
-                <div id="printers">
-                    
-                    <ol></ol>
-                </div>                
+                <label for="enum_printers">Number of printers<input id = "enum_printers" name="enum_printers" pattern="\d+" type="number" value={{len(printer_list)}} min = "1"></label>
+                <div id="printers">                    
+                    <ol>
+                        {%for (i, printer) in enumerate(printer_list)%}
+                            <li><input type='text' id='printer_{{i}}' value='{{printer.keys()[0]}}' maxlength='80'>
+                                <input class='define_options' onclick='show_printer_option({{'"' + str(i) + '"'}})' type='button' value='Define options'>
+                            </li>
+                        {%end%}
+                    </ol>
+                </div>
+
                 <div id="printer_options">
                     <p>Printer options</p>
-                    <ul></ul>
+                    <ul>
+                    </ul>
                 </div>
             </div>  
             <input type="button" onclick = 'process_form()' value="Submit">

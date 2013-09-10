@@ -47,10 +47,10 @@ class STL_handler(tornado.web.RequestHandler):
 		params= {"file": data, "units": u}
 
 		v = s.find_volume(params)	
-		printers = self.get_printer_list()
+		printers = self.eval_printer_list()
 		#self.render("results.html", volume = v, units = u, printer_list={"makerbot":[{"med": 20.1}, {"foo": 74}] })
 		self.render("results.html", volume = v, units = u, printer_list=printers)
-	def get_printer_list(self):
+	def eval_printer_list(self): #parses printer_list into python data structure.
 		try:
 			with open("./admin/printer_options.ast", "r") as f:
 				f.seek(0)
@@ -102,10 +102,11 @@ class Logout_handler(BaseHandler):
 
 class Admin_handler(BaseHandler, STL_handler):
 	@tornado.web.authenticated
+	#@tornado.web.asynchronous
 	def get(self):
-		data = self.get_printer_list()
+		data = self.eval_printer_list()
 		self.render("admin.html", printer_list = data)
-		self.write(data)
+		#self.write(data)
 	def post(self):
 		#print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
@@ -127,6 +128,21 @@ class Admin_handler(BaseHandler, STL_handler):
 			logging.warning("Error saving settings file.")
 			self.write(json.dumps({"result": "Failed to save settings file. Sorry. Check file permissions."}))
 		"""
+class List_handler(tornado.web.RequestHandler):
+	def get(self):
+		data = self.stringify_printer_list()
+		self.write(data)
+	def stringify_printer_list(self):
+		try:
+			with open("./admin/printer_options.ast", "r") as f:
+				f.seek(0)
+				data = json.dumps(f.read())
+				f.close()
+				return data
+		except:
+			logging.warning("Filed to open printer options file.")		
+
+
 """
 datastruct:
 printers = {
@@ -167,6 +183,7 @@ def main():
 		(r"/login", AuthHandler),
 		(r"/admin", Admin_handler),
 		(r"/logout", Logout_handler),
+		(r"/printer_list", List_handler)
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        
 	], **settings)
 	http_server = tornado.httpserver.HTTPServer(application)
