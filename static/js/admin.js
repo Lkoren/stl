@@ -62,25 +62,27 @@ function enable_controls(enabled) {
 }
 
 var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove code that adds custom ids to text/num input elements?
-    if (name === undefined) name = ''
-    if (cost === undefined) cost = '0.00'
+    var printer_name, option_name, option_cost
+
+    name === undefined ? option_name = '' : option_name = name
+    cost === undefined ? option_cost = '0.00' : option_cost = cost
     if (id) {        
         var n = "#printer_" + id  
-        name = $(n).val()          
+        printer_name = $(n).val()          
         $("#printer_options").prepend("<div class='printer_name'>")
-        $(".printer_name").text("Options for: " + name)
+        $(".printer_name").text("Options for: " + printer_name)
     }
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
     enable_controls(false)
     var target = $("#printer_options").find("ul")    
-    var insert_string = "<li><label>Service name: <input type='text' value = '"+name+"' id='option_"+id+"_name' required></label> \
-    <input type='number' id='option_"+id+"_cost' pattern='[0-9]+\.[0-9]+' value='"+cost+"' min='0.0' step='0.01'><label>Cost per CC</label>"
+    var insert_string = "<li><label>Service name: <input type='text' value = '"+option_name+"' id='option_"+id+"_name' required></label> \
+    <input type='number' id='option_"+id+"_cost' pattern='[0-9]+\.[0-9]+' value='"+option_cost+"' min='0.0' step='0.01'><label>Cost per CC</label>"
     insert_string += "<input type='button' value='Remove option' onclick='remove_printer_option('"+id+"')'>"
     if (get_list_size("#printer_options") < 1) {
-        show_option_header_buttons($("#printer_options p"), name)   
+        show_option_header_buttons($("#printer_options p"), printer_name)   
     }    
     target.append(insert_string)    
-    populate_printer_options(name)
+    populate_printer_options(printer_name)
 }
 
 function show_option_header_buttons(target, name) {    
