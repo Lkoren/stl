@@ -110,26 +110,22 @@ class Admin_handler(BaseHandler, STL_handler):
 		self.render("admin.html", printer_list = data)
 		#self.write(data)
 	def post(self):
-		#print "##################"
+		print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
 		#data = tornado.escape.json_decode(self.get_argument('data'))
-		#print type(data['p'])
-		self.save_settings(data["p"])
-		#self.render("results.html", volume = "10", units = "mm", printer_list = data["p"])
-		#self.write("thanks!")
+		print data
+		self.save_settings(data)
 	def save_settings(self, data):
 		print(data)
-		#try:
-		with open("./admin/printer_options.ast", "w") as f:
-			f.seek(0)
-			f.write(str(data))
-			f.close()
-			self.write(json.dumps({"result": "Settings file saved."}))
-		"""
+		try:
+			with open("./admin/printer_options.ast", "w") as f:
+				f.seek(0)
+				f.write(str(data))
+				f.close()
+				self.write(json.dumps({"result": "Settings file saved."}))
 		except:
 			logging.warning("Error saving settings file.")
 			self.write(json.dumps({"result": "Failed to save settings file. Sorry. Check file permissions."}))
-		"""
 class List_handler(tornado.web.RequestHandler):
 	def get(self):
 		data = self.stringify_printer_list()

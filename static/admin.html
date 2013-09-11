@@ -26,8 +26,11 @@
                 <div id="printers">                    
                     <ol>
                         {%for (i, printer) in enumerate(printer_list)%}
-                            <li><input type='text' id='printer_{{i}}' value='{{printer}}' maxlength='80'>
-                                <input class='define_options' onclick='show_printer_option({{'"' + str(i) + '"'}})' type='button' value='Define options'>
+                            <li>
+                                <input type='text' id='printer_{{i}}' value='{{printer}}' maxlength='80' /> 
+                                <input class='define_options' onclick='show_printer_option({{'"' + str(i) + '"'}})' type='button' 
+                                value='Define options' /> 
+                                <input type='button' id='remove_printer_button' value='-' onclick='remove_printer({{'"'+str(i)+ '"'}})/>'
                             </li>
                         {%end%}
                     </ol>

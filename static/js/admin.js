@@ -34,7 +34,10 @@ var printer_exists = function(name) {
 
 ////Define the printers available: eg, Makerbot1, Makerbot2, Form1, Zcorpt
 function make_name_field(id) { //the field which names each type of printer: Makerbot1, Makerbot2, Form1, Form2, Zcorp, etc..    
-    var str = "<li><input type='text' id='printer_"+id+"' maxlength='80'><input class='define_options' onclick='show_printer_option("+id+")' type='button' value='Define options'>"
+    console.log("hi!")
+    var str = "<li><input type='text' id='printer_"+id+"' maxlength='80'/> \
+    <input class='define_options' onclick='show_printer_option("+id+")' type='button' value='Define options'/> \
+    <input type='button' id='remove_printer_button' value='-' onclick='remove_printer("+id+")' />"
     $("#printers").find("ol").append(str)
     str = "#p" + id + "_options"
     var options = $(str)
