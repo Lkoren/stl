@@ -37,7 +37,7 @@ function make_name_field(id) { //the field which names each type of printer: Mak
     console.log("hi!")
     var str = "<li><input type='text' id='printer_"+id+"' maxlength='80'/> \
     <input class='define_options' onclick='show_printer_option("+id+")' type='button' value='Define options'/> \
-    <input type='button' id='remove_printer_button' value='-' onclick='remove_printer("+id+")' />"
+    <input type='button' id='remove_printer_button' value='-' onclick='remove_printer_row("+id+")' />"
     $("#printers").find("ol").append(str)
     str = "#p" + id + "_options"
     var options = $(str)
@@ -46,6 +46,11 @@ function remove_name_field() {
     if (get_list_size("#printers") > 1) {
         $("#printers").find("li:last").remove()
     }
+}
+function remove_printer_row(row){
+    var printer_name = $("#printers li:nth-child("+row+")").find("input[type=text]").val()
+    if (printer_name in printer_data) remove_printer(printer_name)
+    $("#printers li:nth-child("+row+")").remove()    
 }
 ////User interaction with the Printer Options area, eg, defining services offered by Makerbot1: low, med, hi quality @ x,y,z price.
 function enable_controls(enabled) {

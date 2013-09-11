@@ -18,7 +18,7 @@
     </head>
     <body>
         <div id="header"><a href="./logout">Logout</a></div>
-        <form enctype="application/x-www-form-urlencoded:" action="/admin" method="post">       
+        <form enctype="application/x-www-form-urlencoded" action="/admin" method="post">       
             {% raw xsrf_form_html() %}         
             <div id="content">
                 <h1>Admin interface</h1>
@@ -27,10 +27,11 @@
                     <ol>
                         {%for (i, printer) in enumerate(printer_list)%}
                             <li>
-                                <input type='text' id='printer_{{i}}' value='{{printer}}' maxlength='80' /> 
-                                <input class='define_options' onclick='show_printer_option({{'"' + str(i) + '"'}})' type='button' 
+                                <input type='text' id='printer_{{i+1}}' value='{{printer}}' maxlength='80' /> 
+                                <input class='define_options' onclick='show_printer_option({{'"' + str(i+1) + '"'}})' type='button' 
                                 value='Define options' /> 
-                                <input type='button' id='remove_printer_button' value='-' onclick='remove_printer({{'"'+str(i)+ '"'}})/>'
+                                <input type='button' class='remove_printer_button' onclick='remove_printer_row({{'"'+str(i+1)+'"'}})' 
+                                value='-' />
                             </li>
                         {%end%}
                     </ol>
@@ -45,18 +46,21 @@
             <input type="button" id = "submit_button" onclick = 'process_form()' value="Submit">
         </form>       
         <h2>Current Printers and options:</h2>
-        <ul>
-        {%for printer in printer_list%}        
-        <li>{{printer}}</li>
-            {% for options in printer_list[printer] %}
-            <ul>
-                {%  for option in options %}
-                <li>{{option}} : {{options[option]}} </li>                    
+        <div class = "current_printer_list">
+            <ol>
+            {%for printer in printer_list%}        
+            <li>{{printer}}</li>
+                <ul>
+                {% for options in printer_list[printer] %}
+                
+                    {%  for option in options %}
+                    <li>{{option}} : {{options[option]}} </li>                    
+                    {%end%}            
                 {%end%}
-            </ul>
+                </ul>
             {%end%}
-        {%end%}
-        </ul>
+            </ol>
+        </div>
         <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        
         <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
         <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
