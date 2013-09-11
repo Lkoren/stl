@@ -122,7 +122,9 @@ function cache_printer_options(name){ //Builds a local object that represents th
 }*/
 function cache_printer_options(){  //ToDo: refactor this + document init code to be DRY.
     var name = $(".printer_name").text().split(":")[1].trim()
-
+    var e = printer_exists(name)
+    console.log(e)
+    if(e) {delete(e)}
     var p ={}
     p[name] = []
     $("#printer_options li").each(function(){
@@ -137,6 +139,15 @@ function cache_printer_options(){  //ToDo: refactor this + document init code to
 }
 
 ////Utility functions
+function printer_exists(name) {
+    printer_data.p.forEach(function(p) {
+        if (name in p) {
+            console.log(p)
+            return p
+        }
+    })
+    return null
+}
 function process_form() {
     submit_json("/admin", printer_data, function(msg){alert(msg["result"])})
 
