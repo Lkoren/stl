@@ -105,6 +105,8 @@ class Admin_handler(BaseHandler, STL_handler):
 	#@tornado.web.asynchronous
 	def get(self):
 		data = self.eval_printer_list()
+		print "new data: "
+		print data
 		self.render("admin.html", printer_list = data)
 		#self.write(data)
 	def post(self):

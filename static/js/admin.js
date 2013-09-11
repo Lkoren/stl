@@ -1,28 +1,35 @@
 
 var prev_printers = get_num("#enum_printers")
-var printer_data = {"p": []}
+var printer_data
+/*
+new structure:
+printers = {
+    "foo": [{"option_name":"option_cost"}, ...],
+    "bar": [{"option_name":"option_cost"}, ...], 
+    .
+    .
+    .
+}*/
 
-$(document).ready(function(){
-    //need to cache the Printer names/options passed from the server into the local data structure.
+$(document).ready(function() {
     $.getJSON("/printer_list", function(data){
-        var printer_list = JSON.parse(data.replace(/'/g, '"'))
-        printer_list.forEach(function(printer_obj) {
-            for (printer_name in printer_obj) {
-                printer_options = printer_obj[printer_name]
-                var p = {}
-                p[printer_name] = []
-                printer_options.forEach(function(option_obj) {
-                    for (service_name in option_obj) {         
-                        s = {}               
-                        s[service_name] = option_obj[service_name]
-                        p[printer_name].push(s)
-                    }
-                })
-                printer_data.p.push(p)
-            }        
-        })
+        printer_data = JSON.parse(data.replace(/'/g, '"'))
+        console.log(printer_data)
     })
 })
+
+////Printer_data CRUD & util funcs:
+function set_printer(name, settings) {
+    printer_data[name] = settings
+    return printer_data
+}
+function remove_printer(name) {
+    delete(printer_data[name])
+    return printer_data
+}
+var printer_exists = function(name) {
+    return (name in printer_data)
+}
 
 
 ////Define the printers available: eg, Makerbot1, Makerbot2, Form1, Zcorpt
@@ -38,65 +45,84 @@ function remove_name_field() {
     }
 }
 ////User interaction with the Printer Options area, eg, defining services offered by Makerbot1: low, med, hi quality @ x,y,z price.
+function enable_controls(enabled) {
+    var controls = [$("#enum_printers")[0], $("#submit_button")[0]]    
+    build_control_list(".define_options")
+    build_control_list("#printers input[type='text']")
+    function build_control_list(target) {
+        $(target).each(function() { controls.push($(this)[0])
+        })
+    }
+    function set_all_controls(enabled) {
+        controls.forEach(function(node) {
+            !(enabled) ? node.setAttribute('disabled', true) : node.removeAttribute('disabled')            
+        })
+    }
+    set_all_controls(enabled)
+}
+/*
 function disable_define_buttons() {
    $(".define_options").each(function() { $(this).attr("disabled", true)}) 
-   $("#printers input[type='text'").each(function() { $(this).attr("disabled", true)}) 
+   $("#printers input[type='text']").each(function() { $(this).attr("disabled", true)}) 
    $("#enum_printers").attr("disabled", true)
-
+   $("#submit_button").attr("disabled", true)
 }
 function enable_define_buttons() {
     $(".define_options").each(function() { $(this).attr("disabled", false)})    
-    $("#printers input[type='text'").each(function() { $(this).attr("disabled", false)})    
+    $("#printers input[type='text']").each(function() { $(this).attr("disabled", false)})    
     $("#enum_printers").attr("disabled", false)
-}
+    $("#submit_button").attr("disabled", false)
+}*/
 var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove code that adds custom ids to text/num input elements?
-    var name
-    var option_name = (name === undefined ?  '' : name)
-    var option_cost = (cost === undefined ? '0.00' : cost)
+    //var name
+    //name === undefined ?  name = '' : name = name)
+    if (name === undefined) name = ''
+    if (cost === undefined) cost = '0.00'
     if (id) {        
         var n = "#printer_" + id  
         name = $(n).val()          
         $("#printer_options").prepend("<div class='printer_name'>")
         $(".printer_name").text("Options for: " + name)
     }
-
+    console.log(name, ", ", cost)
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
-    disable_define_buttons()
-    var target = $("#printer_options").find("ul")       
-    var insert_string = "<li><label>Service name: <input type='text' value = '"+option_name+"' id='option_"+id+"_name' required></label> \
-    <input type='number' id='option_"+id+"_cost' pattern='[0-9]+\.[0-9]+' value='"+option_cost+"' min='0.0' step='0.01'><label>Cost per CC</label>"
+    enable_controls(false)
+    var target = $("#printer_options").find("ul")    
+    var insert_string = "<li><label>Service name: <input type='text' value = '"+name+"' id='option_"+id+"_name' required></label> \
+    <input type='number' id='option_"+id+"_cost' pattern='[0-9]+\.[0-9]+' value='"+cost+"' min='0.0' step='0.01'><label>Cost per CC</label>"
+    insert_string += "<input type='button' value='Remove option' onclick='remove_printer_option('"+id+"')'>"
     if (get_list_size("#printer_options") < 1) {
-        insert_string += "<input type='button' value='+' onclick='show_printer_option()'>\
-        <input type='button' value='-' onclick='remove_printer_option()'> <input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"
+        show_option_header_buttons($("#printer_options p"), name)   
+
     }    
     target.append(insert_string)    
-    if (get_list_size("#printer_options") === 1) {
-        $("#cache_settings_button").attr("value", 'Submit options for ' + name)
-    }
     populate_printer_options(name)
 }
-function populate_printer_options(printer_name) {
-    printer_data.p.forEach(function(p) {
-        if (printer_name in p) {
-            var first_item = $("#printer_options li")
-            var printer_options_array = p[printer_name]
-            for (var i = 0; i < printer_options_array.length; i++) {
-                var option = printer_options_array[i]
-                for (option_name in option) {
-                    console.log(option_name, ": ", option[option_name])
-                    if (i === 0) { //the first row is created by the "define options button. Insert vals seperately."
-                        var target = $("#printer_options ul").find("li:first")
-                        target.find("input[type=text]").val(option_name)
-                        target.find("input[type=number]").val(option[option_name])
-                    } else { 
-                        show_printer_option(null, option_name, option[option_name])
-                    }                    
-                    
-                    
+
+function show_option_header_buttons(target, name) {    
+    var insert_string = "<input type='button' value='Add option' onclick='show_printer_option()'>"
+    insert_string += "<input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"
+    target.append("<div>", insert_string)
+    $("#cache_settings_button").attr("value", 'Submit options for ' + name)
+}
+
+function populate_printer_options(printer) {
+    if (printer in printer_data) {
+        var first_item = $("#printer_options li")
+        var printer_options_array = printer_data[printer]
+        for (var i = 0; i < printer_options_array.length; i++) {
+        var option = printer_options_array[i]   
+        for (option_name in option) {
+            if (i === 0) { //the first row is created by the "define options button. Insert vals seperately."
+                var target = $("#printer_options ul").find("li:first")
+                target.find("input[type=text]").val(option_name)
+                target.find("input[type=number]").val(option[option_name])
+                } else { 
+                    show_printer_option(null, option_name, option[option_name])
                 }
             }
-        } 
-    })
+        }                
+    }
 }
 
 
@@ -109,7 +135,8 @@ function remove_printer_option() {
 function clear_printer_options(){ //user hits 'submit options', the fields need to go away
     $(".printer_name").remove()
     $("#printer_options li").remove()
-    enable_define_buttons()    
+    //enable_define_buttons()    
+    enable_controls(true)
 }
 /*
 function cache_printer_options(name){ //Builds a local object that represents the available printers and 
@@ -190,6 +217,20 @@ update_form()
 
 ////
 /*
+new structure:
+printers = {
+    "foo": [{"option_name":"option_cost"}, ...],
+    "bar": [{"option_name":"option_cost"}, ...], 
+    .
+    .
+    .
+}
+printers = {
+    "foo": [{"high quality":24.63}, {"med quality":2.63}, {"low quality":0.63}],
+    "bar": [{"high quality":4.63}, {"med quality":1.63}, {"low quality": 0.32}], 
+    "baz": [{"quux quality": 246.3}, {"zzz+++ quality": 35.2}]
+}
+
 datastruct:
 printers = {
     "printers": [ {"makerbot": [{"draft quality": 2.00}, {"medium quality": 4.00}, {"high quality": 6.00}]},

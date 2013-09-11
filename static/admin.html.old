@@ -39,7 +39,7 @@
                     </ul>
                 </div>
             </div>  
-            <input type="button" id = "submit_button" onclick = 'process_form()' value="Submit">
+            <input type="button" onclick = 'process_form()' value="Submit">
         </form>       
         <h2>Current Printers and options:</h2>
         <ul>
