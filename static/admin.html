@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>Quote « Draft Print 3D</title>
+        <title>Admin Interface « Draft Print 3D</title>
         <meta name="description" content="STL quote service. Get a quote for your 3d print.">
         <meta name="viewport" content="width=device-width">
 
@@ -51,8 +51,7 @@
             {%for printer in printer_list%}        
             <li>{{printer}}</li>
                 <ul>
-                {% for options in printer_list[printer] %}
-                
+                {% for options in printer_list[printer] %}                
                     {%  for option in options %}
                     <li>{{option}} : {{options[option]}} </li>                    
                     {%end%}            

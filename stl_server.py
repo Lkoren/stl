@@ -13,6 +13,7 @@ import tornado.httputil
 import ast
 import ui_methods
 import json
+import cgi
 #import bcrypt
 
 # use this if you want to include modules from a subforder
@@ -105,8 +106,6 @@ class Admin_handler(BaseHandler, STL_handler):
 	#@tornado.web.asynchronous
 	def get(self):
 		data = self.eval_printer_list()
-		print "new data: "
-		print data
 		self.render("admin.html", printer_list = data)
 		#self.write(data)
 	def post(self):
@@ -134,7 +133,10 @@ class List_handler(tornado.web.RequestHandler):
 		try:
 			with open("./admin/printer_options.ast", "r") as f:
 				f.seek(0)
-				data = json.dumps(f.read())
+				data = json.dumps(f.read().replace('"', r"\'"))
+
+				
+				print data
 				f.close()
 				return data
 		except:

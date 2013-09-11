@@ -2,8 +2,8 @@ ToDo:
 - Audit/confirm that everything relevant is properly escaped/encoded. 
 		* using struct.unpack translates everything to floats, sufficient for scrubbing? 
 	- check structure of ascii files. 
+	- ' chars in the printer name field break the printer list data structure. 
 - Form validation:
-	- strings in the number field crash the server. 
 	- catch if no file uploaded
 - some basic CSS.
 
@@ -26,6 +26,9 @@ Extra:
 	- other issues?
 - generate gCode?
 - admin favicon
+
+
+
 Done!
 - sanitize input!
 	- check that binary files are only float/ints.
@@ -42,3 +45,5 @@ Done!
 - need a way to do GET on the current printer_options file.
 - If not logged in to goog, admin login page fails. 
 	- user validation/authentication fixed.
+- Form validation:
+	- strings in the number field crash the server. 

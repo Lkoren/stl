@@ -13,6 +13,8 @@ printers = {
 
 $(document).ready(function() {
     $.getJSON("/printer_list", function(data){
+        console.log()
+        console.log(data.replace(/'/g, '"'))
         printer_data = JSON.parse(data.replace(/'/g, '"'))
         console.log(printer_data)
     })
@@ -50,7 +52,8 @@ function remove_name_field() {
 function remove_printer_row(row){
     var printer_name = $("#printers li:nth-child("+row+")").find("input[type=text]").val()
     if (printer_name in printer_data) remove_printer(printer_name)
-    $("#printers li:nth-child("+row+")").remove()    
+    $("#printers li:nth-child("+row+")").remove()   
+    $("#enum_printers").val($("#enum_printers").val()-1)
 }
 ////User interaction with the Printer Options area, eg, defining services offered by Makerbot1: low, med, hi quality @ x,y,z price.
 function enable_controls(enabled) {
