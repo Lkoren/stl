@@ -60,22 +60,8 @@ function enable_controls(enabled) {
     }
     set_all_controls(enabled)
 }
-/*
-function disable_define_buttons() {
-   $(".define_options").each(function() { $(this).attr("disabled", true)}) 
-   $("#printers input[type='text']").each(function() { $(this).attr("disabled", true)}) 
-   $("#enum_printers").attr("disabled", true)
-   $("#submit_button").attr("disabled", true)
-}
-function enable_define_buttons() {
-    $(".define_options").each(function() { $(this).attr("disabled", false)})    
-    $("#printers input[type='text']").each(function() { $(this).attr("disabled", false)})    
-    $("#enum_printers").attr("disabled", false)
-    $("#submit_button").attr("disabled", false)
-}*/
+
 var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove code that adds custom ids to text/num input elements?
-    //var name
-    //name === undefined ?  name = '' : name = name)
     if (name === undefined) name = ''
     if (cost === undefined) cost = '0.00'
     if (id) {        
@@ -84,7 +70,6 @@ var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove c
         $("#printer_options").prepend("<div class='printer_name'>")
         $(".printer_name").text("Options for: " + name)
     }
-    console.log(name, ", ", cost)
     id = id || ($("#printer_options").find("li").size() + 1) //can be called externally or recursively. This is for recursive calls. 
     enable_controls(false)
     var target = $("#printer_options").find("ul")    
@@ -93,7 +78,6 @@ var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove c
     insert_string += "<input type='button' value='Remove option' onclick='remove_printer_option('"+id+"')'>"
     if (get_list_size("#printer_options") < 1) {
         show_option_header_buttons($("#printer_options p"), name)   
-
     }    
     target.append(insert_string)    
     populate_printer_options(name)
@@ -102,9 +86,14 @@ var show_printer_option = function(id, name, cost)  { //ToDo: refactor. Remove c
 function show_option_header_buttons(target, name) {    
     var insert_string = "<input type='button' value='Add option' onclick='show_printer_option()'>"
     insert_string += "<input type='button' id='cache_settings_button' onclick='cache_printer_options()'> </li>"
-    target.append("<div>", insert_string)
+    target.append("<div id = 'option_buttons'>")
+    $("#option_buttons").append(insert_string)
     $("#cache_settings_button").attr("value", 'Submit options for ' + name)
 }
+function remove_option_header_buttons() {
+    $("#option_buttons").remove()
+}
+
 
 function populate_printer_options(printer) {
     if (printer in printer_data) {
@@ -125,8 +114,6 @@ function populate_printer_options(printer) {
     }
 }
 
-
-
 function remove_printer_option() {
     if (get_list_size("#printer_options") > 1) {
         $("#printer_options").find("li:last").remove()
@@ -135,34 +122,24 @@ function remove_printer_option() {
 function clear_printer_options(){ //user hits 'submit options', the fields need to go away
     $(".printer_name").remove()
     $("#printer_options li").remove()
-    //enable_define_buttons()    
     enable_controls(true)
 }
-/*
-function cache_printer_options(name){ //Builds a local object that represents the available printers and 
-    var p = {}
-    var name = name | get_printer_name //the server passes the data it stores as part of the "current printers" div. Store that, and check for new printers def locally.
-    function get_printer_name() {
-        return $(".printer_name").text().split(":")[1].trim()
-    }
 
-}*/
 function cache_printer_options(){  //ToDo: refactor this + document init code to be DRY.
     var name = $(".printer_name").text().split(":")[1].trim()
-    var e = printer_exists(name)
-    console.log(e)
-    if(e) {delete(e)}
-    var p ={}
-    p[name] = []
+    if (name in printer_data) delete(printer_data[name])
+    var options = []
     $("#printer_options li").each(function(){
-        var o = {}
-        var service_name = $(this).find("input[type='text']").val()
-        o[service_name] = $(this).find("input[type='number']").val()
-        p[name].push(o)
+        var option = {}
+        var option_name = $(this).find("input[type='text']").val()
+        var option_cost = $(this).find("input[type='number']").val()
+        option[option_name] = option_cost
+        options.push(option)
     })
-    printer_data.p.push(p)
-    console.log(printer_data)    
+    set_printer(name, options)
     clear_printer_options()
+    remove_option_header_buttons()
+  
 }
 
 ////Utility functions
