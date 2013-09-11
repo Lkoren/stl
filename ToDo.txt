@@ -1,4 +1,9 @@
 ToDo: 
+
+- Auth:
+	-set cookies to expire.
+	-check email addres from google -- names aren't unique.
+
 - Audit/confirm that everything relevant is properly escaped/encoded. 
 		* using struct.unpack translates everything to floats, sufficient for scrubbing? 
 	- check structure of ascii files. 

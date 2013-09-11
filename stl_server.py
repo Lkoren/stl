@@ -133,7 +133,7 @@ class List_handler(tornado.web.RequestHandler):
 		try:
 			with open("./admin/printer_options.ast", "r") as f:
 				f.seek(0)
-				data = json.dumps(f.read().replace('"', r"\'"))
+				data = json.dumps(str(f.read().replace('"', r"\'")))
 
 				
 				print data

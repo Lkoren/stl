@@ -13,7 +13,7 @@ printers = {
 
 $(document).ready(function() {
     $.getJSON("/printer_list", function(data){
-        console.log()
+        console.log(data)
         console.log(data.replace(/'/g, '"'))
         printer_data = JSON.parse(data.replace(/'/g, '"'))
         console.log(printer_data)
