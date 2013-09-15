@@ -60,13 +60,14 @@ function enable_controls(enabled) {
     var controls = [$("#enum_printers")[0], $("#submit_button")[0]]    
     build_control_list(".define_options")
     build_control_list("#printers input[type='text']")
-    function build_control_list(target) {
+    function build_control_list(target) { 
         $(target).each(function() { controls.push($(this)[0])
         })
     }
     function set_all_controls(enabled) {
         controls.forEach(function(node) {
-            !(enabled) ? node.setAttribute('disabled', true) : node.removeAttribute('disabled')            
+           // !(enabled) ? node.setAttribute('disabled', true) : node.removeAttribute('disabled')
+           enabled ? node.removeAttribute('disabled') : node.setAttribute('disabled', true) 
         })
     }
     set_all_controls(enabled)
