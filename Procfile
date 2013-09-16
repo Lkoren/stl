@@ -1,1 +1,1 @@
-web: python stl_server.py
+web: python main.py
