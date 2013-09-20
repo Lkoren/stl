@@ -2,3 +2,7 @@
 #admin/*.ast
 venv
 draftprint.zip
+Procfile
+requirements.txt
+ui_methods.*
+
