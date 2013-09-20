@@ -1,4 +1,4 @@
 *.pyc
-admin/*.ast
+#admin/*.ast
 venv
 draftprint.zip
