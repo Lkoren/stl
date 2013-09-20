@@ -1,3 +1,4 @@
 *.pyc
 admin/*.ast
 venv
+draftprint.zip

@@ -4,8 +4,9 @@ import tornado.options
 import tornado.web
 import tornado.auth
 import tornado.escape
-import os, sys, inspect
-import urllib
+import os 
+#import sys, inspect
+#import urllib
 import logging
 import stl
 from tornado.options import define, options
@@ -13,7 +14,7 @@ import tornado.httputil
 import ast
 import ui_methods
 import json
-import cgi
+#import cgi
 #import bcrypt
 
 # use this if you want to include modules from a subforder
