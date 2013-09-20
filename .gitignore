@@ -2,8 +2,7 @@
 #admin/*.ast
 venv
 draftprint.zip
-ui_methods.py
 Procfile
-lib/
-results/
 requirements.txt
+ui_methods.*
+
