@@ -26,8 +26,8 @@ class Stl:
 				raise Exception("There was a file processing error. The volume appears to be less than or equal to zero. Please check that the file is a watertight STL format.")
 			callback = params['callback']
 			print "callback is: " + str(callback)
-			callback({"callback: volume = ": self.vol})
-			return self.vol
+			callback({"volume": self.vol})
+			#return self.vol
 		except Exception, e:
 			print "Error: "
 			print e
