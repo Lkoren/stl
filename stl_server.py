@@ -46,12 +46,19 @@ class STL_handler(tornado.web.RequestHandler):
 			data = u
 		s = stl.Stl()
 		u = self.get_argument('units')
-		params= {"file": data, "units": u}
+		params= {"file": data, "units": u, "callback": self.callback}
 
 		v = s.find_volume(params)	
 		printers = self.eval_printer_list()
 		#self.render("results.html", volume = v, units = u, printer_list={"makerbot":[{"med": 20.1}, {"foo": 74}] })
 		self.render("results.html", volume = v, units = u, printer_list=printers)
+
+
+	def callback(self, params):
+		print "called!"
+		print params
+		#self.write(params)
+
 	def eval_printer_list(self): #parses printer_list into python data structure.
 		try:
 			with open("./admin/printer_options.ast", "r") as f:
