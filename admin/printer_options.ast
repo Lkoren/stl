@@ -1,1 +1,1 @@
-[{'Bar': [{'Best': '7'}, {'okay': '3.23'}]}, {'Foo': [{'aaa': '36'}]}, {'Foo': [{'aaa': '36'}, {'zzzzA': '3'}]}]
+{'Foo': [{'Foo quality': '4.25'}, {'Bar quality': '2.75'}, {'Quux quality': '1.25'}],'Jabberwocky': [{'Foo2 quality': '3.3'}, {'Bar7 quality': '12.75'}, {'Quux9 quality': '0.35'}],'Makerboy': [{'Foo': '33.12'}, {'Bar': '22.3'}, {'Quux': '13.35'}]}
