@@ -36,7 +36,7 @@
                     {% for options in printer_list[printer] %}
                         {% for option in options %}
                             {% try %}              
-                                <li> {{option}} : {{currency(volume/1000 * float(options[option]))}}</li>
+                                <li> {{option}} : {{ currency( max( 10, volume/1000 * float(options[option])) ) }}</li>
                             {% except %}                                
                             {%end%}    
                         {%end%}
@@ -45,7 +45,7 @@
             {%end%}
         </ul>
         <p>Because of small differences in how volume is computed, this is an estimate only -- final price may vary slightly.</p>
-
+        
         <div class="small">
             <p>STL estimation service by Liav Koren.</p>
         </div>
