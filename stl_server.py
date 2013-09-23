@@ -56,6 +56,7 @@ class STL_handler(tornado.web.RequestHandler):
 
 	def callback(self, params):
 		print "called!"
+		print "callback got:" + str(params['volume'])
 		print params
 		printers = self.eval_printer_list()		
 		self.render("results.html", volume = params['volume'], units = self.units, printer_list = printers)
