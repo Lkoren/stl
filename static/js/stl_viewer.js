@@ -3,27 +3,41 @@ $(document).ready(function() {
 		var reader
 		e.stopPropagation()
 		e.preventDefault()		
-		f = e.target.files[0]	
-		console.log(f)
+		f = e.target.files[0]			
 		ext = f.name.split(".")[1]
-		if (ext != "stl") {
+		if (ext.toLowerCase() != "stl") {
 			alert("That doesn't appear to be an STL file.");
 		
 		} else {
 			reader = new FileReader()
-			reader.onload(function (file) {
-				var stl_loader = new JSC3D.StlLoader()
-				stl_loader.onload = function(scene) {
-			    	viewer.replaceScene(scene);
-			  	};
-				stl_loader.loadFromUrl(f.name)
-			})			
+			reader.onload = (function (file) {
+				return function(e) {
+					//var stl_loader = new JSC3D.StlLoader()
+					/*stl_loader.onload = function(scene) {
+				    	viewer.replaceScene(scene);
+				  	};*/
+				  	console.log("Loaded file is: ", file)
+				  	console.log("target: ", e)
+				  	var canvas = document.getElementById('canvas')
+				  	var viewer = new JSC3D.Viewer(canvas)
+				  	var stl_path = e.target.result
+				  	//var stl_path = "/static/js/square.stl"
+				  	viewer.setParameter('SceneUrl', stl_path)
+	   				viewer.setParameter('InitRotationX', 20)
+					viewer.setParameter('InitRotationY', 20)
+					viewer.setParameter('InitRotationZ', 0)			  	
+				  	viewer.setParameter('ModelColor', '#CAA618')
+				  	viewer.setParameter('BackgroundColor1', '#FFFFFF')
+				  	viewer.setParameter('BackgroundColor2', '#383840')
+				  	viewer.setParameter('RenderMode', 'flat')
+				  	viewer.init()
+				  	viewer.update()
+					//stl_loader.loadFromUrl(f.name)
+				}
+			})(f)
+			reader.readAsDataURL(f)
 		}
-		
-
 	}
-
-
 
 	$("#preview").click(preview)
 	/*

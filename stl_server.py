@@ -152,6 +152,9 @@ class List_handler(tornado.web.RequestHandler):
 				return data
 		except:
 			logging.warning("Filed to open printer options file.")		
+class Preview_handler(tornado.web.RequestHandler):
+	def post(self):
+		self.write("thanks!")
 
 
 """
@@ -194,7 +197,8 @@ def main():
 		(r"/login", AuthHandler),
 		(r"/admin", Admin_handler),
 		(r"/logout", Logout_handler),
-		(r"/printer_list", List_handler)
+		(r"/printer_list", List_handler),
+		(r"/preview", Preview_handler)
 		#(r"/static/(\w+)", tornado.web.StaticFileHandler, dict(path=settings['static_path']) ),        
 	], **settings)
 	http_server = tornado.httpserver.HTTPServer(application)
