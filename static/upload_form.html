@@ -22,7 +22,7 @@
                 <input type="radio" name="file_or_url" id="file" value = "file" checked >
                 <label for="file_select"><input id="file_select" name="file" type="file"></label>
                 <input type = "submit" class = "upload_button" value = "upload">
-                <label for="preview"><input id="preview" value="preview" type="button"></label>
+                <!-- <label for="preview"><input id="preview" value="preview" type="button">< /label> -->
             </div>                     
             <!--
             <div id="url_selector">
@@ -41,7 +41,9 @@
                 <input type="radio" name="units" id="in" value="in">
                 <label>in</label>
             </div>
+            <!--
             <canvas id = "canvas" width = "480" height="320" style="border: 1px solid;"></canvas>
+            -->
 
             <p>Note: some CAD programs do not scale models before saving to STL. In our experience, programs such as Rhino3D may save files with units of millimeters when exporting to STL. If the quoter is calculating the size of your file incorrectly, specifying 'mm' rather than 'cm' may resolve the issue or converting the file to millimeters then exporting to STL may resolve the issue. If you have any issues, please feel free to contact us!</p>
         </form>         
