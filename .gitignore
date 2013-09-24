@@ -5,4 +5,5 @@ draftprint.zip
 Procfile
 requirements.txt
 ui_methods.*
-
+.gitignore.*.*.gitignore
+.gitignore.*
