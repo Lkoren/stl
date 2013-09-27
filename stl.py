@@ -15,7 +15,7 @@ class Stl:
 		units = params['units']
 		#print self.file	 ## module level var
 		#print "Total triangles: "
-		#print self.count_triangles(self.file)
+		self.count_triangles(self.file)
 		try:
 			while len(self.file) > 0:
 				self.vol += self.read_triangle()
@@ -31,9 +31,10 @@ class Stl:
 			callback = params['callback']
 			callback({"volume": self.vol})
 			#return self.vol
-		except Exception:
+		except Exception, e:
 			#print "Error: "
 			#print e
+			logging.warning(e)
 			return False
 	def nibble(self, b):
 		out = self.file[:b]

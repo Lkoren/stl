@@ -30,7 +30,6 @@ logging.info("starting torando web server")
 class STL_handler(tornado.web.RequestHandler):
 	def get(self):
 		self.render("upload_form.html")
-		#print "hello world!"
 	def post(self):
 		try:
 			f = self.request.files
@@ -54,8 +53,7 @@ class STL_handler(tornado.web.RequestHandler):
 		#self.render("results.html", volume = v, units = u, printer_list=printers)
 
 
-	def callback(self, params):
-		#print "called!"
+	def callback(self, params):		
 		#print "callback got:" + str(params['volume'])
 		#print params
 		printers = self.eval_printer_list()		
@@ -85,7 +83,7 @@ class BaseHandler(tornado.web.RequestHandler):
 	        print "#######################################"
 	        """
 	        if user_json["name"] in authorized_users:
-	        	#print "Authorized!"
+	        	print "Authorized!"
 	        	return user_json["name"]
     	except:
         	self.redirect("/")
@@ -146,9 +144,7 @@ class List_handler(tornado.web.RequestHandler):
 		try:
 			with open("./admin/printer_options.ast", "r") as f:
 				f.seek(0)
-				data = json.dumps(str(f.read().replace('"', r"\'")))
-
-				
+				data = json.dumps(str(f.read().replace('"', r"\'")))				
 				#print data
 				f.close()
 				return data
