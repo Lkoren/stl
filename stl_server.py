@@ -30,7 +30,7 @@ logging.info("starting torando web server")
 class STL_handler(tornado.web.RequestHandler):
 	def get(self):
 		self.render("upload_form.html")
-		print "hello world!"
+		#print "hello world!"
 	def post(self):
 		try:
 			f = self.request.files
@@ -55,9 +55,9 @@ class STL_handler(tornado.web.RequestHandler):
 
 
 	def callback(self, params):
-		print "called!"
-		print "callback got:" + str(params['volume'])
-		print params
+		#print "called!"
+		#print "callback got:" + str(params['volume'])
+		#print params
 		printers = self.eval_printer_list()		
 		self.render("results.html", volume = params['volume'], units = self.units, printer_list = printers)
 		#self.write(params)
@@ -76,14 +76,16 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
     	try:
 	        user_json = json.loads(self.get_secure_cookie("user"))
+	        """
 	        print "#######################################"              
 	        print "name: "
 	        print user_json["name"]
 	        print "Authorized? "
 	        print user_json["name"] in authorized_users
 	        print "#######################################"
+	        """
 	        if user_json["name"] in authorized_users:
-	        	print "Authorized!"
+	        	#print "Authorized!"
 	        	return user_json["name"]
     	except:
         	self.redirect("/")
@@ -100,7 +102,7 @@ class AuthHandler(BaseHandler, tornado.auth.GoogleMixin):
     def _on_auth(self, user):
         if not user:
             self.send_error(500)
-        print "got user: " + str(user['name'])
+        #print "got user: " + str(user['name'])
         self.set_secure_cookie("user", tornado.escape.json_encode(user))
         if user['name'] in authorized_users:
         	self.redirect("/admin")
@@ -120,13 +122,13 @@ class Admin_handler(BaseHandler, STL_handler):
 		self.render("admin.html", printer_list = data)
 		#self.write(data)
 	def post(self):
-		print "##################"
+		#print "##################"
 		data = ast.literal_eval(self.get_argument('data'))
 		#data = tornado.escape.json_decode(self.get_argument('data'))
-		print data
+		#print data
 		self.save_settings(data)
 	def save_settings(self, data):
-		print(data)
+		#print(data)
 		try:
 			with open("./admin/printer_options.ast", "w") as f:
 				f.seek(0)
@@ -147,7 +149,7 @@ class List_handler(tornado.web.RequestHandler):
 				data = json.dumps(str(f.read().replace('"', r"\'")))
 
 				
-				print data
+				#print data
 				f.close()
 				return data
 		except:

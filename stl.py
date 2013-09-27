@@ -9,17 +9,17 @@ class Stl:
 		self.bytes = []
 		self.vol = 0
 	def find_volume(self, params):
-		print "received file:"
+		#print "received file:"
 		#self.file = file['file'][0]['body']
 		self.file = params['file']['file'][0]['body'] #TODO: uuugly -- refactor
 		units = params['units']
-		print self.file	 ## module level var
-		print "Total triangles: "
-		print self.count_triangles(self.file)
+		#print self.file	 ## module level var
+		#print "Total triangles: "
+		#print self.count_triangles(self.file)
 		try:
 			while len(self.file) > 0:
 				self.vol += self.read_triangle()
-			print "Ding! Total volume is: "+ str(self.vol)
+			#print "Ding! Total volume is: "+ str(self.vol)
 			#if units != "mm":
 			#	self.vol = ( self.cm_to_mm(self.vol) if (units == "cm") else self.in_to_mm(self.vol) )
 			if units == "mm":
@@ -31,14 +31,14 @@ class Stl:
 			callback = params['callback']
 			callback({"volume": self.vol})
 			#return self.vol
-		except Exception, e:
-			print "Error: "
-			print e
+		except Exception:
+			#print "Error: "
+			#print e
 			return False
 	def nibble(self, b):
 		out = self.file[:b]
 		self.file = self.file[b:]
-		print "nibbled: " + out
+		#print "nibbled: " + out
 		return out
 	def count_triangles(self, file):
 		self.nibble(80)
@@ -51,9 +51,9 @@ class Stl:
 			p2 = u("<3f", self.nibble(12))
 			p3 = u("<3f", self.nibble(12))
 			b = u("<h", self.nibble(2))
-			print "n: " + str(n)
+			#print "n: " + str(n)
 		except SyntaxError:
-			print "syntax error in data."
+			#print "syntax error in data."
 			logging.warning("Syntax error in file." + self.file)
 		l = len(self.points)
 		self.normals.append(n)	
