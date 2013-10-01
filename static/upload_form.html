@@ -13,23 +13,23 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <!-- <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css"> -->        
+        <link rel="stylesheet" href="css/main.css"> -->
     </head>
     <body>
-        <form enctype="multipart/form-data" action="/upload" method="post">   
-            {% raw xsrf_form_html() %}         
-            <div id="file_selector">            
+        <form enctype="multipart/form-data" action="/upload" method="post">
+            {% raw xsrf_form_html() %}
+            <div id="file_selector">
                 <input type="radio" name="file_or_url" id="file" value = "file" checked >
                 <label for="file_select"><input id="file_select" name="file" type="file"></label>
                 <input type = "submit" class = "upload_button" value = "upload">
                 <!-- <label for="preview"><input id="preview" value="preview" type="button">< /label> -->
-            </div>                     
+            </div>
             <!--
             <div id="url_selector">
                 <input type="radio" name="file_or_url" id="url" value = "url" >
-            
+
                 Or, enter a file URL:
-                <input type="url" name = "url" class = "url_field" disabled="disabled">                
+                <input type="url" name = "url" class = "url_field" disabled="disabled">
             </div>
             -->
             <div id="units">
@@ -41,17 +41,17 @@
                 <input type="radio" name="units" id="in" value="in">
                 <label>in</label>
             </div>
-            <!--
-            <canvas id = "canvas" width = "480" height="320" style="border: 1px solid;"></canvas>
-            -->
+            <div class = "canvas">
+                <canvas id = "upload_canvas" width = "480" height="320" style="border: 1px solid;"></canvas>
+            </div>
 
             <p>Note: some CAD programs do not scale models before saving to STL. In our experience, programs such as Rhino3D may save files with units of millimeters when exporting to STL. If the quoter is calculating the size of your file incorrectly, specifying 'mm' rather than 'cm' may resolve the issue or converting the file to millimeters then exporting to STL may resolve the issue. If you have any issues, please feel free to contact us!</p>
-        </form>         
-        <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->        
+        </form>
+        <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->
         <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
         <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src ="/static/js/main.js"></script>
         <script type="text/javascript" src ="/static/js/jsc3d.js"></script>
-        <script type="text/javascript" src ="/static/js/stl_viewer_ajax.js"></script>
+        <script type="text/javascript" src ="/static/js/stl_viewer_uploadPage.js"></script>
     </body>
 </html>

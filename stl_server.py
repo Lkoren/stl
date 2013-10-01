@@ -9,8 +9,6 @@ import tornado.web
 import tornado.auth
 import tornado.escape
 import os
-#import sys, inspect
-#import urllib
 import logging
 import stl
 from tornado.options import define, options
@@ -18,8 +16,6 @@ import tornado.httputil
 import ast
 import ui_methods
 import json
-#import cgi
-#import bcrypt
 
 # use this if you want to include modules from a subforder
 # cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"../DisplayEngine/")))
@@ -27,7 +23,6 @@ import json
 #     sys.path.insert(0, cmd_subfolder)
 
 authorized_users = ['Liav Koren', 'Andre Tiemann']
-
 define("port", default=8888, help="run on the given port", type=int)
 logging.info("starting torando web server")
 
@@ -50,7 +45,7 @@ class STL_handler(tornado.web.RequestHandler):
         except:
             data = u
         try:
-            with open("./temp/temp.stl", "w") as tempFile:
+            with open("./static/stl/temp.stl", "w") as tempFile:
                 tempFile.write(data['file'][0]['body'])
                 tempFile.close()
         except:
@@ -167,9 +162,14 @@ class List_handler(tornado.web.RequestHandler):
 
 class Preview_handler(tornado.web.RequestHandler):
     def get(self):
-        with open("./temp/temp.stl") as stl_data:
+        with open("./static/stl/temp.stl") as stl_data:
             data = stl_data.read()
             self.write(data)
+
+    def post(self):
+        f = self.get_argument('data')
+        print f
+        self.write("thanks!" + str(f))
 
 
 """
