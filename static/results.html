@@ -14,19 +14,19 @@
 
         <!-- <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css"> -->
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
     </head>
     <body>
         {% if volume %}
-            {% if units == "mm" %}   
-                Total volume is about {{'{:.2f}'.format(volume)}} {{units}}<sup>3</sup>.    
+            {% if units == "mm" %}
+                Total volume is about {{'{:.2f}'.format(volume)}} {{units}}<sup>3</sup>.
             {% elif units == "in" %}
                 Total volume is about {{'{:.2f}'.format(volume/16387.064)}} {{units}}<sup>3</sup>.
             {% elif units == "cm" %}
                 Total volume is about {{'{:.2f}'.format(volume/1000)}} {{units}}<sup>3</sup>.
-            {% end %}               
+            {% end %}
         {% else %}
-            There was an error processing your file. Please check that it is a valid, water-tight STL file. 
+            There was an error processing your file. Please check that it is a valid, water-tight STL file.
         {% end %}
             The cost on various printers would be:
         <ul>
@@ -35,19 +35,25 @@
                 <ul>
                     {% for options in printer_list[printer] %}
                         {% for option in options %}
-                            {% try %}              
+                            {% try %}
                                 <li> {{option}} : {{ currency( max( 10, volume/1000 * float(options[option])) ) }}</li>
-                            {% except %}                                
-                            {%end%}    
+                            {% except %}
+                            {%end%}
                         {%end%}
                     {%end%}
                 </ul>
             {%end%}
         </ul>
         <p>Because of small differences in how volume is computed, this is an estimate only -- final price may vary slightly.</p>
-        
+        <div class = "canvas">
+            <canvas id = "results-canvas" width = "480" height="320" style="border: 1px solid;"></canvas>
+        </div>
         <div class="small">
             <p>STL estimation service by Liav Koren.</p>
         </div>
+        <!-- <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->
+        <script type="text/javascript" src ="/static/js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src ="/static/js/jsc3d.js"></script>
+        <script type="text/javascript" src = "static/js/stl_viewer_resultsPage.js"></script>
     </body>
 </html>
