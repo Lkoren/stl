@@ -8,3 +8,6 @@ requirements.txt
 ui_methods.*
 .gitignore.*.*.gitignore
 .gitignore.*
+print_calibration
+jsc3d-read-only/
+static/js/jsc3d.js
