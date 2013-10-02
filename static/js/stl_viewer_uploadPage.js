@@ -2,16 +2,16 @@ $(document).ready(function() {
 	var handle_file_select = function(e) {
 		e.stopPropagation()
 		e.preventDefault()
-		var viewer
 		var theScene
 		var f = e.target.files[0]
 		var reader = new FileReader()
 		var ext = f.name.split(".")[1]
 		var mycanvas = document.getElementById('upload_canvas');
 		var stl_loader = new JSC3D.StlLoader()
+		var viewer = new JSC3D.Viewer(mycanvas)
 
-		function init_viewer() {
-			viewer = new JSC3D.Viewer(mycanvas);
+		setup_viewer()
+		function setup_viewer() {
 			viewer.setParameter('InitRotationX', 20);
 			viewer.setParameter('InitRotationY', 20);
 			viewer.setParameter('InitRotationZ', 0);
@@ -21,18 +21,10 @@ $(document).ready(function() {
 			viewer.setParameter('RenderMode', "flat");
 		}
 
-		function init_scene() {
-			theScene = new JSC3D.Scene
-			if (!(theScene.isEmpty)) {
-				console.log(theScene)
-			}
-		}
-
 		reader.onload = (function(file) {
 			return function(e) {
-				console.log("old scene: ", theScene)
-				init_viewer()
-				init_scene()
+				theScene = new JSC3D.Scene
+		    	stl_loader = new JSC3D.StlLoader()
 		    	stl_loader.parseStl(theScene, e.target.result)
 		      	viewer.init()
 		      	viewer.replaceScene(theScene)
