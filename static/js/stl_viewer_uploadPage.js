@@ -47,6 +47,7 @@ $(document).ready(function() {
 			}
 		}
 
+
 	if (window.File) {
 		document.getElementById('file_select').addEventListener('change', handle_file_select, false)
 	}
