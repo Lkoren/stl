@@ -44,15 +44,14 @@ class STL_handler(tornado.web.RequestHandler):
             data = f
         except:
             data = u
+        """
         try:
             with open("./static/stl/temp.stl", "w") as tempFile:
                 tempFile.write(data['file'][0]['body'])
                 tempFile.close()
         except:
                 logging.warning("Failed to create temp stl file for preview.")
-                self.write(json.dumps({"result":
-                    "Sorry, the render plugin has experienced an error. \
-                    This is not a problem with your file "}))
+        """
         s = stl.Stl()
         self.units = self.get_argument('units')
         params = {"file": data, "units": u, "callback": self.callback}
