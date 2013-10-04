@@ -1,13 +1,13 @@
-ToDo: 
+ToDo:
 
 - Auth:
 	-set cookies to expire.
 	-check email addres from google -- names aren't unique.
 
-- Audit/confirm that everything relevant is properly escaped/encoded. 
-		* using struct.unpack translates everything to floats, sufficient for scrubbing? 
-	- check structure of ascii files. 
-	- ' chars in the printer name field break the printer list data structure. 
+- Audit/confirm that everything relevant is properly escaped/encoded.
+		* using struct.unpack translates everything to floats, sufficient for scrubbing?
+	- check structure of ascii files.
+	- ' chars in the  printer name field break the printer list data structure.
 - Form validation:
 	- catch if no file uploaded
 - some basic CSS.
@@ -15,17 +15,17 @@ ToDo:
 
 - SSL cert for localhost/deployment
     - For all cookies set the HTTPOnly and Secure flag
-	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS	      
-- STL preview in page
+	- Make sure login pages are only served on HTTPS and all authenticated pages are only served on HTTPS
 
-Extra: 
-- handle URLs: 
+
+Extra:
+- handle URLs:
 	eg: http://www.thingiverse.com/download:274010
-		- May need to write logic to parse file objects, no because there appears to be no guarantee that I can gulp the entire file over the network. 
+		- May need to write logic to parse file objects, no because there appears to be no guarantee that I can gulp the entire file over the network.
 - handle ascii format
 - drag and drop?
-- file validation?: 
-	- solid? 
+- file validation?:
+	- solid?
 	- small regions?
 	- overhangs?
 	- other issues?
@@ -35,20 +35,21 @@ Extra:
 
 
 Done!
+- STL preview in page
 - sanitize input!
 	- check that binary files are only float/ints.
-		-relevant code is HTML escaped. 
+		-relevant code is HTML escaped.
 
 - binary files
-- handle units, 
+- handle units,
 - error checking:
-	- error message if vol is =< 0	
+	- error message if vol is =< 0
 - admin page with options/prices
-	- generate output based on options/prices	
+	- generate output based on options/prices
 -add escaping and validation for all form fields..
 -1_in cube, uploaded with in units, gets zero vol.
 - need a way to do GET on the current printer_options file.
-- If not logged in to goog, admin login page fails. 
+- If not logged in to goog, admin login page fails.
 	- user validation/authentication fixed.
 - Form validation:
-	- strings in the number field crash the server. 
+	- strings in the number field crash the server.

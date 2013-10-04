@@ -41,5 +41,23 @@ $(document).ready(function() {
 
 	if (window.File) {
 		document.getElementById('file_select').addEventListener('change', handle_file_select, false)
+		document.getElementById('upload_button').addEventListener('click', upload, false)
 	}
+
+/*
+	function upload() {
+		var data = {}
+		data.file =
+		$.ajax({
+			type: "POST",
+			url: "upload",
+
+		})
+	}
+
+	function getCookie(name) {
+    	var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    	return c ? c[1] : undefined;
+	}
+	*/
 })
