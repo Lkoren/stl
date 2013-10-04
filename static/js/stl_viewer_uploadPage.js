@@ -1,14 +1,14 @@
 $(document).ready(function() {
+	var mycanvas = document.getElementById('upload_canvas');
+	var viewer = new JSC3D.Viewer(mycanvas)
 	var handle_file_select = function(e) {
 		e.stopPropagation()
 		e.preventDefault()
 		var theScene
+		var stl_loader
 		var f = e.target.files[0]
 		var reader = new FileReader()
 		var ext = f.name.split(".")[1]
-		var mycanvas = document.getElementById('upload_canvas');
-		var stl_loader = new JSC3D.StlLoader()
-		var viewer = new JSC3D.Viewer(mycanvas)
 
 		setup_viewer()
 		function setup_viewer() {
@@ -38,7 +38,6 @@ $(document).ready(function() {
 			reader.readAsBinaryString(f)
 			}
 		}
-
 
 	if (window.File) {
 		document.getElementById('file_select').addEventListener('change', handle_file_select, false)
