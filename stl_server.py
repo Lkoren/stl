@@ -10,6 +10,7 @@ import tornado.auth
 import tornado.escape
 import os
 import logging
+#import stl
 import stl
 from tornado.options import define, options
 import tornado.httputil
@@ -51,10 +52,12 @@ class STL_handler(tornado.web.RequestHandler):
                     tempFile.close()
             except:
                     logging.warning("Failed to create temp stl file for preview.")
-            s = stl.Stl()
+            #s = stl.Stl()
             self.units = self.get_argument('units')
             params = {"file": data, "units": u, "callback": self.callback}
-            s.find_volume(params)
+            #s.find_volume(params)
+            s = stl.Stl()
+            s.process(params)
         else:
             self.write("Sorry, we didn't receive a file. Please try again.")
 

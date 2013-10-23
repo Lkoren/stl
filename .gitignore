@@ -14,3 +14,6 @@ static/js/jsc3d.js
 *.zip
 static/js/delete/
 temp/
+ignore/
+*.STL
+*.stl
