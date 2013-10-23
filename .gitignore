@@ -11,3 +11,6 @@ ui_methods.*
 print_calibration
 jsc3d-read-only/
 static/js/jsc3d.js
+*.zip
+static/js/delete/
+temp/
